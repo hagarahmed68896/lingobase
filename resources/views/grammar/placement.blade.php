@@ -39,9 +39,88 @@
         min-height: calc(100vh - 64px);
     }
 
-    /* Hide Sidebar for Premium Layout */
+    /* Premium Sidebar Navigation */
     .sidebar-wrapper {
-        display: none !important;
+        width: 320px;
+        background: var(--glass-bg);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--border-color);
+        border-radius: 2rem;
+        box-shadow: var(--card-shadow);
+        height: fit-content;
+        position: sticky;
+        top: 2rem;
+        margin-right: 2rem;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    @media (max-width: 1024px) {
+        .app-viewport { flex-direction: column; align-items: center; }
+        .sidebar-wrapper { width: 100%; max-width: 850px; margin-right: 0; margin-bottom: 2rem; position: relative; top: 0; }
+    }
+
+    .sidebar-header {
+        padding: 1.5rem 2rem;
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+        background: rgba(255,255,255,0.3);
+    }
+
+    .sidebar-content {
+        padding: 1.5rem 2rem 2rem;
+    }
+
+    .q-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 0.75rem;
+    }
+
+    .q-chip {
+        aspect-ratio: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 0.75rem;
+        font-size: 0.85rem;
+        font-weight: 700;
+        background: white;
+        border: 1px solid #e2e8f0;
+        color: var(--text-muted);
+        cursor: pointer;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .q-chip:hover {
+        border-color: var(--primary);
+        color: var(--primary);
+        transform: translateY(-2px);
+    }
+
+    .q-chip.current {
+        background: white;
+        border: 2px solid var(--primary);
+        color: var(--primary);
+        box-shadow: 0 0 0 3px var(--primary-light);
+    }
+
+    .q-chip.answered {
+        background: var(--primary);
+        border-color: var(--primary);
+        color: white;
+    }
+
+    .q-chip.listening {
+        position: relative;
+    }
+    .q-chip.listening::after {
+        content: '🔊';
+        position: absolute;
+        top: -2px;
+        right: -2px;
+        font-size: 0.6rem;
     }
 
     /* Premium Quiz Card */
@@ -746,6 +825,17 @@
 
 @section('content')
 <div class="app-viewport">
+    <!-- Persistent Sidebar -->
+    <div id="side-nav" class="sidebar-wrapper hidden">
+        <div class="sidebar-header">
+            <h3 style="margin:0; font-size: 1.1rem; font-weight: 800; color: var(--text-main);">Progress</h3>
+            <p style="margin: 0.25rem 0 0; font-size: 0.85rem; color: var(--text-muted);">Jump to any question</p>
+        </div>
+        <div class="sidebar-content">
+            <div class="q-grid" id="unified-grid"></div>
+        </div>
+    </div>
+
     <!-- Main Content Area -->
     <div class="main-wrapper" id="main-scene">
         
@@ -908,7 +998,7 @@
                 renderQuestion(data.data.first_question);
                 startTimer();
                 
-                // document.getElementById('side-nav').classList.remove('hidden');
+                document.getElementById('side-nav').classList.remove('hidden');
                 showView('scene-test');
             } else {
                 alert(data.message);
@@ -921,13 +1011,29 @@
     }
 
     function buildSidebar() {
-        // Sidebar grid removed in premium layout
+        const container = document.getElementById('unified-grid');
+        container.innerHTML = '';
+        for (let i = 0; i < totalQs; i++) {
+            const chip = document.createElement('div');
+            chip.className = 'q-chip';
+            chip.id = `chip-${i}`;
+            chip.innerText = i + 1;
+            chip.onclick = () => jumpTo(i);
+            container.appendChild(chip);
+        }
+        updateStat();
     }
 
     function updateStat() {
         const progress = ((currentIndex + 1) / totalQs) * 100;
         document.getElementById('progress-bar').style.width = `${progress}%`;
         document.getElementById('answered-stat').innerText = `Question ${currentIndex + 1} / ${totalQs}`;
+        
+        // Update chips
+        answered.forEach(idx => {
+            const chip = document.getElementById(`chip-${idx}`);
+            if (chip) chip.classList.add('answered');
+        });
     }
 
     async function renderQuestion(q) {
@@ -971,7 +1077,10 @@
             optStack.appendChild(div);
         });
 
-        // Sidebar sync removed in premium layout
+        // Sidebar sync
+        document.querySelectorAll('.q-chip').forEach(c => c.classList.remove('current'));
+        const activeChip = document.getElementById(`chip-${currentIndex}`);
+        if(activeChip) activeChip.classList.add('current');
         
         if (q.answered) {
             answered.add(currentIndex);
@@ -1000,7 +1109,8 @@
             const data = await res.json();
             if (data.status) {
                 answered.add(currentIndex);
-                // document.getElementById(`chip-${currentIndex}`).classList.add('answered'); // Removed legacy ID
+                const chip = document.getElementById(`chip-${currentIndex}`);
+                if (chip) chip.classList.add('answered');
                 updateStat();
 
                 // if last node and all done, show finish
@@ -1073,7 +1183,7 @@
 
     function displayResults(data) {
         if (timerId) clearInterval(timerId);
-        // document.getElementById('side-nav').classList.add('hidden');
+        document.getElementById('side-nav').classList.add('hidden');
         
         document.getElementById('res-val').innerText = Math.round(data.percentage);
         document.getElementById('res-lvl-label').innerText = `Level ${data.detected_level}`;
