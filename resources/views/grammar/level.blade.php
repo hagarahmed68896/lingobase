@@ -8,9 +8,9 @@
         margin: 0 !important;
     }
     .header-section {
-        background: #f9fafb;
+        background: var(--bg-body);
         padding: 4rem 2rem;
-        border-bottom: 1px solid #e5e7eb;
+        border-bottom: 1px solid var(--border-color);
         text-align: center;
     }
     .breadcrumb {
@@ -18,7 +18,7 @@
         display: flex;
         justify-content: center;
         gap: 0.5rem;
-        color: #6b7280;
+        color: var(--text-muted);
         font-size: 0.9rem;
     }
     .breadcrumb a {
@@ -29,11 +29,11 @@
     .page-title {
         font-size: 2.5rem;
         font-weight: 800;
-        color: #111827;
+        color: var(--text-main);
         margin-bottom: 1rem;
     }
     .page-subtitle {
-        color: #4b5563;
+        color: var(--text-muted);
         font-size: 1.1rem;
         max-width: 600px;
         margin: 0 auto;
@@ -51,10 +51,10 @@
     .lesson-item {
         display: flex;
         align-items: center;
-        background: white;
+        background: var(--bg-card);
         padding: 1.5rem 2rem;
         border-radius: 1rem;
-        border: 1px solid #e5e7eb;
+        border: 1px solid var(--border-color);
         transition: all 0.2s;
         text-decoration: none;
         color: inherit;
@@ -68,7 +68,8 @@
     .lesson-number {
         font-size: 1.5rem;
         font-weight: 800;
-        color: #d1d5db;
+        color: var(--text-muted);
+        opacity: 0.5;
         margin-right: 2rem;
         min-width: 40px;
     }
@@ -78,11 +79,11 @@
     .lesson-title {
         font-size: 1.25rem;
         font-weight: 700;
-        color: #1f2937;
+        color: var(--text-main);
         margin-bottom: 0.25rem;
     }
     .lesson-desc {
-        color: #6b7280;
+        color: var(--text-muted);
         font-size: 0.95rem;
     }
     .lesson-actions {

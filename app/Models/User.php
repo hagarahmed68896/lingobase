@@ -21,6 +21,11 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'phone_number',
+        'avatar',
+        'language',
+        'in_app_notifications',
+        'email_notifications',
     ];
 
     /**
@@ -59,6 +64,8 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'is_admin' => 'boolean',
+            'in_app_notifications' => 'boolean',
+            'email_notifications' => 'boolean',
         ];
     }
 }

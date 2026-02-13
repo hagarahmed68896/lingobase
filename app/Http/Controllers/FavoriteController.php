@@ -12,7 +12,18 @@ class FavoriteController extends Controller
 {
     public function index()
     {
-        $favorites = Auth::user()->favorites()->with('favoritable')->latest()->get();
+        $favorites = Auth::user()->favorites()
+            ->with([
+                'favoritable' => function ($morphTo) {
+                    $morphTo->morphWith([
+                        GrammarLesson::class => ['grammarLevel.language'],
+                        Story::class => ['storyLevel.language'],
+                    ]);
+                }
+            ])
+            ->latest()
+            ->get();
+            
         return view('favorites.index', compact('favorites'));
     }
 

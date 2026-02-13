@@ -32,7 +32,7 @@
                         </button>
                         <span style="display: inline-block; background: #dcfce7; color: #166534; padding: 0.25rem 0.75rem; border-radius: 99px; font-size: 0.75rem; font-weight: 600; margin-bottom: 0.75rem;">Grammar</span>
                         <h3 style="margin: 0 0 0.5rem 0; font-size: 1.25rem;">
-                            <a href="{{ route('grammar.lesson', [$item->level->language->slug, $item->level->slug, $item->slug]) }}" style="color: inherit; text-decoration: none;">
+                            <a href="{{ route('grammar.lesson', [$item->grammarLevel->language->slug, $item->grammarLevel->slug, $item->slug]) }}" style="color: inherit; text-decoration: none;">
                                 {{ $item->title }}
                             </a>
                         </h3>
@@ -52,7 +52,7 @@
                         </div>
                         <div style="padding: 1.25rem;">
                             <h3 style="margin: 0 0 0.5rem 0; font-size: 1.25rem;">
-                                <a href="{{ route('stories.show', [$item->level->language->slug, $item->level->slug, $item->slug]) }}" style="color: inherit; text-decoration: none;">
+                                <a href="{{ route('stories.show', [$item->storyLevel->language->slug, $item->storyLevel->slug, $item->slug]) }}" style="color: inherit; text-decoration: none;">
                                     {{ $item->title }}
                                 </a>
                             </h3>

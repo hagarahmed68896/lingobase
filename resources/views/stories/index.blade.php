@@ -44,14 +44,15 @@
         font-weight: 300;
     }
     .search-container {
-        background: rgba(255,255,255,0.95);
+        background: var(--bg-card);
         padding: 0.5rem;
         border-radius: 999px;
         display: flex;
         align-items: center;
         max-width: 600px;
         margin: 0 auto;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        box-shadow: var(--shadow-sm);
+        border: 1px solid var(--border-color);
     }
     .search-input {
         flex: 1;
@@ -60,6 +61,7 @@
         font-size: 1rem;
         outline: none;
         background: transparent;
+        color: var(--text-main);
         border-radius: 999px;
     }
     .search-btn {
@@ -94,7 +96,7 @@
     .level-title {
         font-size: 2rem;
         font-weight: 700;
-        color: #1f2937;
+        color: var(--text-main);
         margin: 0;
     }
     .see-more-link {
@@ -119,12 +121,13 @@
         gap: 2.5rem;
     }
     .story-card {
-        background: white;
+        background: var(--bg-card);
         border-radius: 1.5rem;
         overflow: hidden;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         position: relative;
-        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        box-shadow: var(--shadow-sm);
+        border: 1px solid var(--border-color);
         height: 100%;
         display: flex;
         flex-direction: column;
@@ -178,11 +181,11 @@
         font-size: 1.35rem;
         font-weight: 700;
         margin: 0 0 1rem 0;
-        color: #111827;
+        color: var(--text-main);
         line-height: 1.3;
     }
     .story-excerpt {
-        color: #6b7280;
+        color: var(--text-muted);
         font-size: 0.95rem;
         line-height: 1.6;
         margin-bottom: 1.5rem;
@@ -192,7 +195,8 @@
         position: absolute;
         top: 1rem;
         right: 1rem;
-        background: rgba(255,255,255,0.9);
+        background: var(--bg-card);
+        opacity: 0.9;
         border: none;
         width: 36px;
         height: 36px;
@@ -202,7 +206,7 @@
         justify-content: center;
         cursor: pointer;
         z-index: 10;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        box-shadow: var(--shadow-sm);
         transition: transform 0.2s;
     }
     .fav-btn:hover {
@@ -237,16 +241,17 @@
                 <div class="stories-grid">
                     @foreach($level->stories->take(3) as $story)
                     <div class="story-card">
-                        @auth
                         <button onclick="toggleFavorite(this, {{ $story->id }}, 'story'); event.preventDefault();" class="fav-btn">
+                            @php
+                                $isFavorited = auth()->check() && auth()->user()->favorites()->where('favoritable_id', $story->id)->where('favoritable_type', 'App\Models\Story')->exists();
+                            @endphp
                             <svg width="20" height="20" viewBox="0 0 24 24" 
-                                fill="{{ auth()->user()->favorites()->where('favoritable_id', $story->id)->where('favoritable_type', 'App\Models\Story')->exists() ? '#ef4444' : 'none' }}" 
-                                stroke="{{ auth()->user()->favorites()->where('favoritable_id', $story->id)->where('favoritable_type', 'App\Models\Story')->exists() ? '#ef4444' : '#6b7280' }}" 
+                                fill="{{ $isFavorited ? '#ef4444' : 'none' }}" 
+                                stroke="{{ $isFavorited ? '#ef4444' : '#6b7280' }}" 
                                 stroke-width="2">
                                 <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
                             </svg>
                         </button>
-                        @endauth
 
                         <a href="{{ route('stories.show', [$language->slug, $level->slug, $story->slug]) }}" style="text-decoration: none; color: inherit; display: flex; flex-direction: column; height: 100%;">
                             <div class="story-img-container">
@@ -272,6 +277,13 @@
 
 <script>
 async function toggleFavorite(btn, id, type) {
+    @guest
+        if (confirm('Please log in to add favorites.')) {
+            window.location.href = "{{ route('login') }}";
+        }
+        return;
+    @endguest
+
     try {
         const response = await fetch("{{ route('favorites.toggle') }}", {
             method: 'POST',

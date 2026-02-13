@@ -53,9 +53,26 @@ class GrammarController extends Controller
             ->firstOrFail();
         $lesson = GrammarLesson::where('slug', $lessonSlug)
             ->where('grammar_level_id', $level->id)
-            ->with(['quiz.questions.options'])
             ->firstOrFail();
 
         return view('grammar.lesson', compact('language', 'level', 'lesson'));
+    }
+
+    public function showQuiz($languageSlug, $levelSlug, $lessonSlug)
+    {
+        $language = Language::where('slug', $languageSlug)->firstOrFail();
+        $level = GrammarLevel::where('slug', $levelSlug)
+            ->where('language_id', $language->id)
+            ->firstOrFail();
+        $lesson = GrammarLesson::where('slug', $lessonSlug)
+            ->where('grammar_level_id', $level->id)
+            ->with(['quiz.questions.options'])
+            ->firstOrFail();
+
+        if (!$lesson->quiz) {
+            return redirect()->back()->with('error', 'Quiz not found.');
+        }
+
+        return view('grammar.quiz', compact('language', 'level', 'lesson'));
     }
 }

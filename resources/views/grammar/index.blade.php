@@ -44,14 +44,15 @@
         font-weight: 300;
     }
     .search-container {
-        background: white;
+        background: var(--bg-card);
         padding: 0.5rem;
         border-radius: 999px;
         display: flex;
         align-items: center;
         max-width: 600px;
         margin: 0 auto;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        box-shadow: var(--shadow-sm);
+        border: 1px solid var(--border-color);
     }
     .search-input {
         flex: 1;
@@ -60,6 +61,8 @@
         font-size: 1rem;
         outline: none;
         border-radius: 999px;
+        background: transparent;
+        color: var(--text-main);
     }
     .search-btn {
         background: #009150;
@@ -103,7 +106,7 @@
     .level-title {
         font-size: 2rem;
         font-weight: 700;
-        color: #1f2937;
+        color: var(--text-main);
         margin: 0;
     }
     .see-more-link {
@@ -129,9 +132,9 @@
         gap: 2rem;
     }
     .lesson-card {
-        background: white;
+        background: var(--bg-card);
         border-radius: 1rem;
-        border: 1px solid #e5e7eb;
+        border: 1px solid var(--border-color);
         overflow: hidden;
         transition: all 0.3s ease;
         position: relative;
@@ -156,12 +159,12 @@
         font-size: 1.5rem;
         font-weight: 700;
         margin: 0 0 0.75rem 0;
-        color: #111827;
+        color: var(--text-main);
         line-height: 1.3;
         padding-right: 2rem;
     }
     .card-excerpt {
-        color: #6b7280;
+        color: var(--text-muted);
         font-size: 1rem;
         line-height: 1.6;
         margin-bottom: 1.5rem;
@@ -172,11 +175,11 @@
         align-items: center;
         justify-content: space-between;
         padding-top: 1rem;
-        border-top: 1px solid #f3f4f6;
+        border-top: 1px solid var(--border-color);
     }
     .lesson-meta {
         font-size: 0.875rem;
-        color: #9ca3af;
+        color: var(--text-muted);
         display: flex;
         align-items: center;
         gap: 0.5rem;
@@ -232,16 +235,17 @@
                 <div class="lessons-grid">
                     @foreach($level->lessons->take(3) as $lesson)
                     <div class="lesson-card">
-                        @auth
                         <button onclick="toggleFavorite(this, {{ $lesson->id }}, 'grammar_lesson'); event.preventDefault();" class="fav-btn">
+                            @php
+                                $isFavorited = auth()->check() && auth()->user()->favorites()->where('favoritable_id', $lesson->id)->where('favoritable_type', 'App\Models\GrammarLesson')->exists();
+                            @endphp
                             <svg width="24" height="24" viewBox="0 0 24 24" 
-                                fill="{{ auth()->user()->favorites()->where('favoritable_id', $lesson->id)->where('favoritable_type', 'App\Models\GrammarLesson')->exists() ? '#ef4444' : 'none' }}" 
-                                stroke="{{ auth()->user()->favorites()->where('favoritable_id', $lesson->id)->where('favoritable_type', 'App\Models\GrammarLesson')->exists() ? '#ef4444' : '#d1d5db' }}" 
+                                fill="{{ $isFavorited ? '#ef4444' : 'none' }}" 
+                                stroke="{{ $isFavorited ? '#ef4444' : '#d1d5db' }}" 
                                 stroke-width="2">
                                 <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
                             </svg>
                         </button>
-                        @endauth
 
                         <a href="{{ route('grammar.lesson', [$language->slug, $level->slug, $lesson->slug]) }}" style="text-decoration: none; display: flex; flex-direction: column; flex-grow: 1;">
                             <div class="card-body">
@@ -267,6 +271,13 @@
 
 <script>
 async function toggleFavorite(btn, id, type) {
+    @guest
+        if (confirm('Please log in to add favorites.')) {
+            window.location.href = "{{ route('login') }}";
+        }
+        return;
+    @endguest
+
     try {
         const response = await fetch("{{ route('favorites.toggle') }}", {
             method: 'POST',

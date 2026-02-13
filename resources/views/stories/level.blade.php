@@ -49,20 +49,20 @@
         gap: 2.5rem;
     }
     .story-card {
-        background: white;
+        background: var(--bg-card);
         border-radius: 1.5rem;
         overflow: hidden;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        box-shadow: var(--shadow-sm);
         height: 100%;
         display: flex;
         flex-direction: column;
-        border: 1px solid #f3f4f6;
+        border: 1px solid var(--border-color);
     }
     .story-card:hover {
         transform: translateY(-8px);
-        box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
-        border-color: #d1d5db;
+        box-shadow: var(--shadow-md);
+        border-color: var(--primary);
     }
     .story-img-container {
         height: 240px;
@@ -87,11 +87,11 @@
         font-size: 1.5rem;
         font-weight: 700;
         margin: 0 0 1rem 0;
-        color: #111827;
+        color: var(--text-main);
         line-height: 1.2;
     }
     .story-excerpt {
-        color: #6b7280;
+        color: var(--text-muted);
         font-size: 1rem;
         line-height: 1.6;
         margin-bottom: 2rem;

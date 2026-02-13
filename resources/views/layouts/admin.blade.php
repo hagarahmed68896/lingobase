@@ -267,6 +267,68 @@
 
         .badge-success { background: #dcfce7; color: #166534; }
         .badge-blue { background: #dbeafe; color: #1e40af; }
+
+        /* Pagination Styling */
+        .pagination {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .page-item {
+            display: inline-block;
+        }
+
+        .page-item .page-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 38px;
+            height: 38px;
+            padding: 0 0.75rem;
+            border-radius: 0.5rem;
+            border: 1px solid #e5e7eb;
+            background: white;
+            color: #374151;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+
+        .page-item.active .page-link {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        .page-item.disabled .page-link {
+            background: #f9fafb;
+            color: #9ca3af;
+            cursor: not-allowed;
+            border-color: #f3f4f6;
+        }
+
+        .page-item:not(.active):not(.disabled) .page-link:hover {
+            background: #f3f4f6;
+            border-color: #d1d5db;
+            color: #111827;
+        }
+
+        .pagination-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .pagination-info {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
     </style>
 </head>
 <body>

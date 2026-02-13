@@ -8,9 +8,9 @@
         margin: 0 !important;
     }
     .lesson-header {
-        background: #f9fafb;
+        background: var(--bg-body);
         padding: 4rem 2rem;
-        border-bottom: 1px solid #e5e7eb;
+        border-bottom: 1px solid var(--border-color);
     }
     .header-content {
         max-width: 1400px;
@@ -22,11 +22,11 @@
     .lesson-title {
         font-size: 2.5rem;
         font-weight: 800;
-        color: #111827;
+        color: var(--text-main);
         margin: 0 0 0.5rem 0;
     }
     .back-link {
-        color: #6b7280;
+        color: var(--text-muted);
         text-decoration: none;
         display: flex;
         align-items: center;
@@ -35,7 +35,7 @@
         margin-bottom: 1rem;
     }
     .back-link:hover {
-        color: #009150;
+        color: var(--primary);
     }
     .lesson-layout {
         max-width: 1400px;
@@ -46,16 +46,16 @@
         gap: 4rem;
     }
     .content-card {
-        background: white;
+        background: var(--bg-card);
         border-radius: 1.5rem;
         padding: 3rem;
-        border: 1px solid #e5e7eb;
-        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        border: 1px solid var(--border-color);
+        box-shadow: var(--shadow-sm);
     }
     .lesson-text {
         font-size: 1.1rem;
         line-height: 1.7;
-        color: #374151;
+        color: var(--text-main);
     }
     .quiz-sidebar {
         position: sticky;
@@ -92,16 +92,17 @@
     .option-label {
         display: block;
         padding: 0.75rem 1rem;
-        border: 2px solid #f3f4f6;
+        border: 2px solid var(--border-color);
         border-radius: 0.75rem;
         margin-bottom: 0.5rem;
         cursor: pointer;
         transition: all 0.2s;
         font-size: 0.95rem;
+        color: var(--text-main);
     }
     .option-label:hover {
-        border-color: #d1d5db;
-        background: #f9fafb;
+        border-color: var(--text-muted);
+        background: var(--bg-body);
     }
     .option-label.selected {
         border-color: #009150;
@@ -116,6 +117,20 @@
         border-color: #ef4444;
         background: #fee2e2;
         color: #991b1b;
+    }
+    .progress-fill {
+        height: 100%;
+        background: #009150;
+        width: 0%;
+        transition: width 0.3s;
+    }
+    .quiz-start-btn:hover {
+        transform: translateY(-4px) scale(1.02);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.25);
+        background: #fdfdfd;
+    }
+    .quiz-start-btn:active {
+        transform: translateY(-2px) scale(0.98);
     }
     .check-btn {
         width: 100%;
@@ -156,10 +171,23 @@
                 Back to {{ $level->name }}
             </a>
             <h1 class="lesson-title">{{ $lesson->title }}</h1>
-            <div style="display: flex; gap: 0.5rem;">
+            <div style="display: flex; gap: 0.5rem; align-items: center;">
                 <span style="background: #e0e7ff; color: #4338ca; padding: 0.25rem 0.75rem; border-radius: 1rem; font-size: 0.8rem; font-weight: 600;">{{ $language->name }}</span>
                 <span style="background: #fae8ff; color: #a21caf; padding: 0.25rem 0.75rem; border-radius: 1rem; font-size: 0.8rem; font-weight: 600;">{{ $level->name }}</span>
             </div>
+        </div>
+        <div>
+            <button onclick="toggleFavorite(this, {{ $lesson->id }}, 'grammar_lesson')" 
+                    class="btn" 
+                    style="background: white; border: 1px solid #e5e7eb; color: #374151; padding: 0.75rem 1.5rem; border-radius: 0.75rem; display: flex; align-items: center; gap: 0.5rem; font-weight: 700; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                @php
+                    $isFavorited = auth()->check() && auth()->user()->favorites()->where('favoritable_id', $lesson->id)->where('favoritable_type', 'App\Models\GrammarLesson')->exists();
+                @endphp
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="{{ $isFavorited ? '#ef4444' : 'none' }}" stroke="{{ $isFavorited ? '#ef4444' : 'currentColor' }}" stroke-width="2">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                </svg>
+                <span>{{ $isFavorited ? 'Saved to Favorites' : 'Add to Favorites' }}</span>
+            </button>
         </div>
     </div>
 </div>
@@ -182,36 +210,35 @@
     </div>
 
     <div class="quiz-sidebar">
-        <div class="quiz-card">
-            <div class="quiz-header">
-                <h3 class="quiz-title">Quiz Yourself</h3>
-                <p style="margin: 0.25rem 0 0 0; opacity: 0.9; font-size: 0.9rem;">Test your knowledge!</p>
+        <div class="quiz-card" style="border: 1px solid #e5e7eb; background: white; padding: 2.5rem 2rem; text-align: center; position: relative; overflow: hidden; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05); border-radius: 1.5rem;">
+            
+            <div style="width: 72px; height: 72px; background: #ecfdf5; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; border: 1px solid #d1fae5;">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#009150" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
             </div>
-            <div class="quiz-body">
-                @if($lesson->quiz && $lesson->quiz->questions->count() > 0)
-                    <div id="quiz-form">
-                        @foreach($lesson->quiz->questions as $question)
-                        <div class="question-item" data-id="{{ $question->id }}">
-                            <p class="question-text">{{ $loop->iteration }}. {{ $question->question }}</p>
-                            @foreach($question->options as $option)
-                            <label class="option-label">
-                                <input type="radio" name="question_{{ $question->id }}" value="{{ $option->id }}" data-correct="{{ $option->is_correct ? 'true' : 'false' }}" style="margin-right: 0.5rem;">
-                                {{ $option->option_text }}
-                            </label>
-                            @endforeach
-                        </div>
-                        @endforeach
-                        
-                        <button id="check-btn" class="check-btn">Check Answers</button>
-                        <div id="result-box" class="result-box"></div>
-                    </div>
-                @else
-                    <div style="text-align: center; padding: 2rem 0; color: #6b7280;">
-                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom: 1rem; opacity: 0.5;"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                        <p>No quiz available for this lesson yet.</p>
-                    </div>
-                @endif
-            </div>
+            
+            <h3 style="font-size: 1.75rem; font-weight: 800; margin-bottom: 0.5rem; color: #111827;">Ready to Quiz?</h3>
+            <p style="color: #6b7280; margin-bottom: 2.5rem; font-size: 1rem; line-height: 1.5;">Master "{{ $lesson->title }}" and track your progress!</p>
+            
+            <a href="{{ route('grammar.quiz', [$language->slug, $level->slug, $lesson->slug]) }}" 
+               onclick="return checkAuth(event)"
+               class="btn quiz-start-btn" 
+               style="background: #009150; color: white; width: 100%; justify-content: center; padding: 1rem 1.5rem; border-radius: 1rem; font-size: 1.1rem; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 0.75rem; box-shadow: 0 4px 6px -1px rgba(0, 145, 80, 0.3); transition: all 0.2s; border: none;">
+                <span>Start Lesson Quiz</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+            
+            @guest
+                <p style="margin-top: 1.25rem; font-size: 0.85rem; color: #9ca3af; font-weight: 500;">Please log in to save your results</p>
+            @endguest
+        </div>
+        
+        <div style="margin-top: 2rem; background: white; border: 1px solid #e5e7eb; border-radius: 1.5rem; padding: 1.5rem;">
+            <h4 style="font-weight: 700; margin: 0 0 1rem 0;">Key Takeaways</h4>
+            <ul style="padding-left: 1.25rem; margin: 0; color: #6b7280; font-size: 0.9rem; line-height: 1.6;">
+                <li>Understand the core rules</li>
+                <li>Practice with real examples</li>
+                <li>Complete the interactive quiz</li>
+            </ul>
         </div>
     </div>
 </div>
@@ -219,76 +246,49 @@
 
 @section('scripts')
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Styling radio buttons
-    const options = document.querySelectorAll('.option-label');
-    options.forEach(opt => {
-        opt.addEventListener('click', function() {
-            // Find all options in this question and remove selected
-            const questionItem = this.closest('.question-item');
-            questionItem.querySelectorAll('.option-label').forEach(o => o.classList.remove('selected'));
-            // Add selected to clicked
-            this.classList.add('selected');
-            // Check the radio input
-            this.querySelector('input').checked = true;
+function checkAuth(e) {
+    @guest
+        e.preventDefault();
+        window.location.href = "{{ route('login') }}";
+        return false;
+    @endguest
+    return true;
+}
+
+async function toggleFavorite(btn, id, type) {
+    @guest
+        if (confirm('Please log in to add favorites.')) {
+            window.location.href = "{{ route('login') }}";
+        }
+        return;
+    @endguest
+
+    try {
+        const response = await fetch("{{ route('favorites.toggle') }}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({ id, type })
         });
-    });
-
-    const checkBtn = document.getElementById('check-btn');
-    if (checkBtn) {
-        checkBtn.addEventListener('click', function() {
-            const questions = document.querySelectorAll('.question-item');
-            let correctCount = 0;
-            let answeredCount = 0;
-            
-            questions.forEach(q => {
-                const selectedInput = q.querySelector('input:checked');
-                
-                // Reset styles
-                q.querySelectorAll('.option-label').forEach(l => {
-                    l.classList.remove('correct', 'incorrect');
-                });
-
-                if (selectedInput) {
-                    answeredCount++;
-                    const isCorrect = selectedInput.dataset.correct === 'true';
-                    const selectedLabel = selectedInput.closest('.option-label');
-                    
-                    if (isCorrect) {
-                        selectedLabel.classList.add('correct');
-                        correctCount++;
-                    } else {
-                        selectedLabel.classList.add('incorrect');
-                        // Highlight correct answer
-                        const correctInput = q.querySelector('input[data-correct="true"]');
-                        if (correctInput) {
-                            correctInput.closest('.option-label').classList.add('correct');
-                        }
-                    }
-                }
-            });
-
-            const resultBox = document.getElementById('result-box');
-            resultBox.style.display = 'block';
-            
-            if (answeredCount < questions.length) {
-                resultBox.style.background = '#fef3c7';
-                resultBox.style.color = '#92400e';
-                resultBox.innerHTML = `Please answer all ${questions.length} questions.`;
-            } else {
-                const percentage = Math.round((correctCount / questions.length) * 100);
-                if (percentage >= 70) {
-                    resultBox.style.background = '#d1fae5';
-                    resultBox.style.color = '#065f46';
-                    resultBox.innerHTML = `Great job! You scored ${percentage}% (${correctCount}/${questions.length})`;
-                } else {
-                    resultBox.style.background = '#fee2e2';
-                    resultBox.style.color = '#991b1b';
-                    resultBox.innerHTML = `Keep practicing! You scored ${percentage}% (${correctCount}/${questions.length})`;
-                }
-            }
-        });
+        
+        const data = await response.json();
+        const icon = btn.querySelector('svg');
+        const span = btn.querySelector('span');
+        
+        if (data.status === 'added') {
+            icon.setAttribute('fill', '#ef4444');
+            icon.setAttribute('stroke', '#ef4444');
+            span.innerText = 'Saved to Favorites';
+        } else {
+            icon.setAttribute('fill', 'none');
+            icon.setAttribute('stroke', 'currentColor');
+            span.innerText = 'Add to Favorites';
+        }
+    } catch (error) {
+        console.error('Error toggling favorite:', error);
     }
-});
+}
 </script>
 @endsection

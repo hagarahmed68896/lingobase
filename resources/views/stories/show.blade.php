@@ -80,22 +80,23 @@
     .reader-content {
         max-width: 800px;
         margin: -4rem auto 4rem;
-        background: white;
-        border-radius: 2px;
+        background: var(--bg-card);
+        border-radius: 0.5rem;
         padding: 4rem;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.08); /* Minimal shadow */
+        box-shadow: var(--shadow-md);
         position: relative;
         z-index: 20;
+        border: 1px solid var(--border-color);
     }
     .audio-player {
-        background: #f8fafc;
+        background: var(--bg-body);
         border-radius: 1rem;
         padding: 1.5rem;
         margin-bottom: 3rem;
         display: flex;
         align-items: center;
         gap: 1.5rem;
-        border: 1px solid #e2e8f0;
+        border: 1px solid var(--border-color);
     }
     .play-icon-box {
         width: 48px;
@@ -112,7 +113,7 @@
         font-family: 'Merriweather', 'Georgia', serif;
         font-size: 1.25rem;
         line-height: 2;
-        color: #334155;
+        color: var(--text-main);
     }
     .text-content p {
         margin-bottom: 1.5rem;
@@ -164,35 +165,43 @@
     </div>
 
     @if(app()->getLocale() == 'ar' && $story->arabic_comment)
-        <div class="arabic-illustration" style="margin-top: 4rem; padding: 2rem; background: #f0fdf4; border-radius: 1rem; direction: rtl; text-align: right; border: 1px solid #dcfce7;">
-            <h3 style="font-size: 1.25rem; font-weight: 700; color: #15803d; margin-bottom: 1rem;">تعليق توضيحي</h3>
-            <div style="font-size: 1.1rem; line-height: 1.8; color: #166534;">
+        <div class="arabic-illustration" style="margin-top: 4rem; padding: 2rem; background: var(--bg-body); border-radius: 1rem; direction: rtl; text-align: right; border: 1px solid var(--border-color);">
+            <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--primary); margin-bottom: 1rem;">تعليق توضيحي</h3>
+            <div style="font-size: 1.1rem; line-height: 1.8; color: var(--text-muted);">
                 {!! nl2br(e($story->arabic_comment)) !!}
             </div>
         </div>
     @endif
     
-    <div style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid #e2e8f0; text-align: center;">
-        <h3 style="margin-bottom: 1rem;">Enjoyed this story?</h3>
+    <div style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border-color); text-align: center;">
+        <h3 style="margin-bottom: 1rem; color: var(--text-main);">Enjoyed this story?</h3>
         <div style="display: flex; justify-content: center; gap: 1rem;">
             <a href="{{ route('stories.level', [$language->slug, $level->slug]) }}" class="btn">Read Another Story</a>
-            @auth
-            <button onclick="toggleFavorite(this, {{ $story->id }}, 'story')" class="btn" style="border-color: #e2e8f0; display: flex; gap: 0.5rem;">
+            <button onclick="toggleFavorite(this, {{ $story->id }}, 'story')" class="btn" style="border-color: var(--border-color); display: flex; gap: 0.5rem; background: var(--bg-card); color: var(--text-main);">
+                 @php
+                    $isFavorited = auth()->check() && auth()->user()->favorites()->where('favoritable_id', $story->id)->where('favoritable_type', 'App\Models\Story')->exists();
+                 @endphp
                  <svg width="20" height="20" viewBox="0 0 24 24" 
-                    fill="{{ auth()->user()->favorites()->where('favoritable_id', $story->id)->where('favoritable_type', 'App\Models\Story')->exists() ? '#ef4444' : 'none' }}" 
-                    stroke="{{ auth()->user()->favorites()->where('favoritable_id', $story->id)->where('favoritable_type', 'App\Models\Story')->exists() ? '#ef4444' : '#6b7280' }}" 
+                    fill="{{ $isFavorited ? '#ef4444' : 'none' }}" 
+                    stroke="{{ $isFavorited ? '#ef4444' : '#6b7280' }}" 
                     stroke-width="2">
                     <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
                 </svg>
-                Favorite
+                <span>{{ $isFavorited ? 'Saved' : 'Favorite' }}</span>
             </button>
-            @endauth
         </div>
     </div>
 </article>
 
 <script>
 async function toggleFavorite(btn, id, type) {
+    @guest
+        if (confirm('Please log in to add favorites.')) {
+            window.location.href = "{{ route('login') }}";
+        }
+        return;
+    @endguest
+
     try {
         const response = await fetch("{{ route('favorites.toggle') }}", {
             method: 'POST',
@@ -205,13 +214,16 @@ async function toggleFavorite(btn, id, type) {
         
         const data = await response.json();
         const svg = btn.querySelector('svg');
+        const span = btn.querySelector('span');
         
         if (data.status === 'added') {
             svg.setAttribute('fill', '#ef4444');
             svg.setAttribute('stroke', '#ef4444');
+            span.innerText = 'Saved';
         } else {
             svg.setAttribute('fill', 'none');
             svg.setAttribute('stroke', '#6b7280');
+            span.innerText = 'Favorite';
         }
     } catch (error) {
         console.error('Error toggling favorite:', error);
