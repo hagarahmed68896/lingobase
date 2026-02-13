@@ -12,7 +12,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+       // لضمان عمل الروابط بشكل صحيح على Vercel
+    $this->app->bind('path.public', function() {
+        return base_path('public');
+    });
     }
 
     /**
