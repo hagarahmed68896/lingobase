@@ -14,19 +14,7 @@ use Carbon\Carbon;
 
 class PlacementTestController extends Controller
 {
-    // Grammar Level Distribution Quotas (20 total)
-    const GRAMMAR_QUOTAS = [
-        'A1/A2' => 9,
-        'B1' => 6,
-        'B2' => 5,
-        'C1' => 4
-    ];
-
-    // Vocabulary Quotas (15 total)
-    const VOCAB_QUOTAS = [
-        'Normal' => 7,
-        'Extra' => 4
-    ];
+    // Settings will be fetched from database
 
     public function start(Request $request)
     {
@@ -47,11 +35,13 @@ class PlacementTestController extends Controller
             // 2. Select Vocabulary Questions (15 Total)
             $vocabQuestions = $this->selectVocabQuestions();
 
-            // 3. Select Listening Questions (4 Total)
-            $listeningQuestions = PlacementQuestion::where('section', 'listening')->inRandomOrder()->limit(4)->pluck('id')->toArray();
+            // 3. Select Listening Questions
+            $otherQuotas = \App\Models\PlacementSetting::getValue('other_quotas', ['listening' => 4, 'reading' => 4]);
+            
+            $listeningQuestions = PlacementQuestion::where('section', 'listening')->inRandomOrder()->limit($otherQuotas['listening'])->pluck('id')->toArray();
 
-            // 4. Select Reading Questions (4 Total)
-            $readingQuestions = PlacementQuestion::where('section', 'reading')->inRandomOrder()->limit(4)->pluck('id')->toArray();
+            // 4. Select Reading Questions
+            $readingQuestions = PlacementQuestion::where('section', 'reading')->inRandomOrder()->limit($otherQuotas['reading'])->pluck('id')->toArray();
 
             // Merge sequences: Grammar -> Vocab -> Listening -> Reading
             $questionSequence = array_merge($grammarQuestions, $vocabQuestions, $listeningQuestions, $readingQuestions);
@@ -66,6 +56,13 @@ class PlacementTestController extends Controller
             ]);
 
             DB::commit();
+
+            if (empty($questionSequence)) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'No questions found for the placement test. Please contact administrator.'
+                ], 404);
+            }
 
             return response()->json([
                 'status' => true,
@@ -96,7 +93,11 @@ class PlacementTestController extends Controller
             'C1' => ['C1']
         ];
 
-        foreach (self::GRAMMAR_QUOTAS as $quotaGroup => $count) {
+        $grammarQuotas = \App\Models\PlacementSetting::getValue('grammar_quotas', [
+            'A1/A2' => 9, 'B1' => 6, 'B2' => 5, 'C1' => 4
+        ]);
+
+        foreach ($grammarQuotas as $quotaGroup => $count) {
             $levels = $levelsMap[$quotaGroup];
             
             $pool = PlacementQuestion::where('section', 'grammar')
@@ -129,23 +130,27 @@ class PlacementTestController extends Controller
         $selectedIds = [];
         $usedIds = [];
 
-        // Select 7 Normal category questions
+        $vocabQuotas = \App\Models\PlacementSetting::getValue('vocab_quotas', [
+            'Normal' => 7, 'Extra' => 4
+        ]);
+
+        // Select Normal category questions
         $normalQuestions = PlacementQuestion::where('section', 'vocabulary')
             ->where('vocab_category', 'Normal')
             ->inRandomOrder()
-            ->limit(7)
+            ->limit($vocabQuotas['Normal'])
             ->pluck('id')
             ->toArray();
 
         $selectedIds = array_merge($selectedIds, $normalQuestions);
         $usedIds = array_merge($usedIds, $normalQuestions);
 
-        // Select 4 Extra category questions
+        // Select Extra category questions
         $extraQuestions = PlacementQuestion::where('section', 'vocabulary')
             ->where('vocab_category', 'Extra')
             ->whereNotIn('id', $usedIds)
             ->inRandomOrder()
-            ->limit(4)
+            ->limit($vocabQuotas['Extra'])
             ->pluck('id')
             ->toArray();
 

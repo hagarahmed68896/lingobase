@@ -80,6 +80,19 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::resource('languages', App\Http\Controllers\Admin\LanguageController::class);
     Route::resource('grammar', App\Http\Controllers\Admin\GrammarController::class);
     Route::resource('stories', App\Http\Controllers\Admin\StoryController::class);
+    Route::resource('placement-questions', App\Http\Controllers\Admin\PlacementQuestionController::class);
+    
+    // Placement Test Settings
+    Route::get('placement-settings', [App\Http\Controllers\Admin\PlacementSettingsController::class, 'index'])->name('placement-settings.index');
+    Route::post('placement-settings', [App\Http\Controllers\Admin\PlacementSettingsController::class, 'update'])->name('placement-settings.update');
+
+    // Grammar Quiz Management
+    Route::get('grammar/{lesson}/quiz', [App\Http\Controllers\Admin\GrammarQuizController::class, 'index'])->name('grammar.quiz.index');
+    Route::get('grammar/{lesson}/quiz/create', [App\Http\Controllers\Admin\GrammarQuizController::class, 'create'])->name('grammar.quiz.create');
+    Route::post('grammar/{lesson}/quiz', [App\Http\Controllers\Admin\GrammarQuizController::class, 'store'])->name('grammar.quiz.store');
+    Route::get('grammar/quiz/{question}/edit', [App\Http\Controllers\Admin\GrammarQuizController::class, 'edit'])->name('grammar.quiz.edit');
+    Route::put('grammar/quiz/{question}', [App\Http\Controllers\Admin\GrammarQuizController::class, 'update'])->name('grammar.quiz.update');
+    Route::delete('grammar/quiz/{question}', [App\Http\Controllers\Admin\GrammarQuizController::class, 'destroy'])->name('grammar.quiz.destroy');
 });
 
 Route::post('/contact', [ContactController::class, 'send'])->name('contact.send');

@@ -53,6 +53,19 @@
         .sidebar-nav {
             flex: 1;
             padding: 1.5rem 0;
+            overflow-y: auto; /* Fix for sidebar scrolling */
+        }
+        
+        /* Custom Scrollbar for sidebar */
+        .sidebar-nav::-webkit-scrollbar {
+            width: 5px;
+        }
+        .sidebar-nav::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .sidebar-nav::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
         }
 
         .nav-item {
@@ -358,6 +371,10 @@
             <a href="{{ route('admin.stories.index') }}" class="nav-item {{ request()->routeIs('admin.stories.*') ? 'active' : '' }}">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10l4 4v10a2 2 0 01-2 2z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 11V9m-4 5V9m-4 5V9"></path></svg>
                 Stories
+            </a>
+            <a href="{{ route('admin.placement-questions.index') }}" class="nav-item {{ request()->routeIs('admin.placement-questions.*') ? 'active' : '' }}">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                Placement Tests
             </a>
         </nav>
         <div style="padding: 1.5rem; border-top: 1px solid rgba(255, 255, 255, 0.1);">

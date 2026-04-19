@@ -94,6 +94,9 @@
                             </td>
                             <td style="padding: 1.5rem; text-align: right;">
                                 <div style="display: flex; justify-content: flex-end; gap: 0.75rem;">
+                                    <a href="{{ route('admin.grammar.quiz.index', $lesson) }}" style="background: #fff7ed; color: #ea580c; padding: 0.5rem; border-radius: 0.5rem; transition: all 0.2s;" title="Manage Quiz" onmouseover="this.style.background='#ffedd5'" onmouseout="this.style.background='#fff7ed'">
+                                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                                    </a>
                                     <a href="{{ route('admin.grammar.edit', $lesson) }}" style="background: #f3f4f6; color: #1f2937; padding: 0.5rem; border-radius: 0.5rem; transition: all 0.2s;" title="Edit Lesson" onmouseover="this.style.background='#e5e7eb'" onmouseout="this.style.background='#f3f4f6'">
                                         <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                                     </a>

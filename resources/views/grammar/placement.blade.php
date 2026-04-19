@@ -48,9 +48,10 @@
         border: 1px solid var(--border-color);
         border-radius: 2rem;
         box-shadow: var(--card-shadow);
-        height: fit-content;
+        height: calc(100vh - 120px);
         position: sticky;
-        top: 2rem;
+        top: 100px;
+        align-self: flex-start;
         margin-right: 2rem;
         display: flex;
         flex-direction: column;
@@ -123,10 +124,10 @@
         font-size: 0.6rem;
     }
 
-    /* Premium Quiz Card */
     .quiz-surface {
+        flex: 1;
         width: 100%;
-        max-width: 850px;
+        max-width: none;
         background: var(--glass-bg);
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
@@ -136,7 +137,7 @@
         overflow: hidden;
         display: flex;
         flex-direction: column;
-        min-height: 600px;
+        min-height: 600px; /* Kept fixed min height */
         transition: opacity 0.3s ease, transform 0.3s ease;
     }
 
@@ -200,15 +201,16 @@
         font-size: 1.85rem;
         font-weight: 800;
         color: var(--text-main);
-        line-height: 1.3;
+        line-height: 1.4;
         margin-bottom: 2.5rem;
         letter-spacing: -0.02em;
+        text-align: center;
     }
 
     /* Interactive Options */
     .options-stack {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr;
         gap: 1.25rem;
     }
 
@@ -331,6 +333,7 @@
     /* Onboarding Overhaul */
     .onboard-lux {
         max-width: 700px;
+        width: 100%;
         background: white;
         padding: 4rem 3rem;
         border-radius: 2.5rem;
@@ -406,24 +409,27 @@
     /* Layout structure */
     .app-viewport {
         display: flex;
-        justify-content: center;
-        align-items: flex-start; /* Changed from center to stabilize top position */
-        padding-top: 2rem;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: 2rem 1.5rem;
         min-height: calc(100vh - 64px);
         background: var(--bg-body);
+        width: 100%;
+        box-sizing: border-box;
+        gap: 2rem;
     }
 
-    .sidebar-wrapper {
-        width: 340px;
-        background: white;
-        border-right: 1px solid #e2e8f0;
+    /* Main content wrapper fills remaining space */
+    .main-wrapper {
+        flex: 1;
         display: flex;
         flex-direction: column;
-        height: calc(100vh - 64px);
-        position: sticky;
-        top: 64px;
-        z-index: 10;
+        align-items: center;
+        justify-content: center;
+        min-height: calc(100vh - 200px);
+        width: 100%;
     }
+
     .sidebar-lux {
         background: var(--bg-card);
         border-right: 1px solid var(--border-color);
@@ -544,8 +550,9 @@
 
     /* Quiz Card Styling */
     .quiz-surface {
+        flex: 1;
         width: 100%;
-        max-width: 800px;
+        max-width: none;
         background: white;
         border-radius: 1.5rem;
         box-shadow: var(--card-shadow);
@@ -586,12 +593,13 @@
     }
 
     .question-h {
-        font-size: 1.5rem;
-        font-weight: 700;
+        font-size: 1.6rem;
+        font-weight: 800;
         color: var(--text-main);
-        line-height: 1.4;
-        margin-bottom: 2rem;
+        line-height: 1.6;
+        margin-bottom: 2.5rem;
         word-break: break-word; /* Fix for long text */
+        text-align: center;
     }
 
     .options-stack {
