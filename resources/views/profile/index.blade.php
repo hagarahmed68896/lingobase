@@ -504,7 +504,7 @@
         <div class="sidebar-nav">
             <button onclick="switchSection('personal')" id="nav-personal" class="nav-btn active">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                Profile Settings
+                {{ __('messages.my_profile') }}
             </button>
             <button onclick="switchSection('favorites')" id="nav-favorites" class="nav-btn">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
@@ -543,7 +543,7 @@
         <div id="section-personal">
             <h2 class="section-title">
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                Profile Settings
+                {{ __('messages.my_profile') }}
             </h2>
             
             <form action="{{ route('profile.update') }}" method="POST">
@@ -552,66 +552,96 @@
                 
                 <!-- Account Card -->
                 <div class="profile-card">
-                    <div class="card-header">
-                        <div class="card-icon">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <div class="card-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                            </div>
+                            <h3 class="card-title">{{ __('messages.account_details') }}</h3>
                         </div>
-                        <h3 class="card-title">{{ __('messages.account_details') }}</h3>
+                        <button type="button" id="btn-edit-account" onclick="enableAccountEdit()" style="background: none; border: 1px solid var(--border-color); color: var(--text-main); padding: 0.5rem 1rem; border-radius: 0.5rem; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 0.5rem;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                            Change
+                        </button>
                     </div>
                     
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+                    <div style="display: flex; flex-direction: column; gap: 1.5rem; max-width: 500px;">
                         <div class="form-group">
                             <label class="form-label">{{ __('messages.full_name') }}</label>
-                            <input type="text" name="name" class="form-control" value="{{ old('name', $user->name) }}" required>
+                            <input type="text" name="name" id="input-name" class="form-control account-input" value="{{ old('name', $user->name) }}" required readonly style="background-color: var(--bg-body); cursor: not-allowed; opacity: 0.8;">
                         </div>
                         
                         <div class="form-group">
                             <label class="form-label">{{ __('messages.email_address') }}</label>
-                            <input type="email" name="email" class="form-control" value="{{ old('email', $user->email) }}" required>
+                            <input type="email" name="email" id="input-email" class="form-control account-input" value="{{ old('email', $user->email) }}" required readonly style="background-color: var(--bg-body); cursor: not-allowed; opacity: 0.8;">
                         </div>
-                    </div>
-                </div>
 
-                <!-- Contact Card -->
-                <div class="profile-card">
-                    <div class="card-header">
-                        <div class="card-icon">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                        <div class="form-group">
+                            <label class="form-label">{{ __('messages.phone_number') }}</label>
+                            <div style="display: flex; gap: 0.5rem; align-items: stretch;">
+                                @php
+                                    $currentPhone = old('phone_number', $user->phone_number ?? '');
+                                    $currentLocal = preg_replace('/^\+\d{1,3}/', '', $currentPhone);
+                                @endphp
+                                <select id="country-code" class="form-control account-input" disabled style="width: auto; background-color: var(--bg-body); cursor: not-allowed; opacity: 0.8; padding: 0 0.5rem;">
+                                    <option value="+20" {{ str_starts_with($currentPhone, '+20') ? 'selected' : '' }}>🇪🇬 +20 (Egypt)</option>
+                                    <option value="+966" {{ str_starts_with($currentPhone, '+966') ? 'selected' : '' }}>🇸🇦 +966 (KSA)</option>
+                                    <option value="+971" {{ str_starts_with($currentPhone, '+971') ? 'selected' : '' }}>🇦🇪 +971 (UAE)</option>
+                                    <option value="+965" {{ str_starts_with($currentPhone, '+965') ? 'selected' : '' }}>🇰🇼 +965 (Kuwait)</option>
+                                    <option value="+974" {{ str_starts_with($currentPhone, '+974') ? 'selected' : '' }}>🇶🇦 +974 (Qatar)</option>
+                                    <option value="+973" {{ str_starts_with($currentPhone, '+973') ? 'selected' : '' }}>🇧🇭 +973 (Bahrain)</option>
+                                    <option value="+968" {{ str_starts_with($currentPhone, '+968') ? 'selected' : '' }}>🇴🇲 +968 (Oman)</option>
+                                    <option value="+962" {{ str_starts_with($currentPhone, '+962') ? 'selected' : '' }}>🇯🇴 +962 (Jordan)</option>
+                                    <option value="+964" {{ str_starts_with($currentPhone, '+964') ? 'selected' : '' }}>🇮🇶 +964 (Iraq)</option>
+                                    <option value="+212" {{ str_starts_with($currentPhone, '+212') ? 'selected' : '' }}>🇲🇦 +212 (Morocco)</option>
+                                    <option value="+213" {{ str_starts_with($currentPhone, '+213') ? 'selected' : '' }}>🇩🇿 +213 (Algeria)</option>
+                                    <option value="+216" {{ str_starts_with($currentPhone, '+216') ? 'selected' : '' }}>🇹🇳 +216 (Tunisia)</option>
+                                    <option value="+1" {{ str_starts_with($currentPhone, '+1') ? 'selected' : '' }}>🇺🇸 +1 (US)</option>
+                                    <option value="+44" {{ str_starts_with($currentPhone, '+44') ? 'selected' : '' }}>🇬🇧 +44 (UK)</option>
+                                </select>
+                                <input type="tel" id="local-phone" class="form-control account-input" value="{{ $currentLocal }}" placeholder="123456789" readonly style="background-color: var(--bg-body); cursor: not-allowed; opacity: 0.8; flex: 1;" pattern="[0-9]{8,15}" title="Please enter a valid phone number (8 to 15 digits)">
+                                <input type="hidden" name="phone_number" id="input-phone" value="{{ $currentPhone }}">
+                            </div>
                         </div>
-                        <h3 class="card-title">{{ __('messages.contact_information') }}</h3>
                     </div>
                     
-                    <div class="form-group" style="max-width: 400px;">
-                        <label class="form-label">{{ __('messages.phone_number') }}</label>
-                        <input type="tel" name="phone_number" class="form-control" value="{{ old('phone_number', $user->phone_number) }}" placeholder="+1234567890">
-                    </div>
-                </div>
-
-                <!-- Security Card -->
-                <div class="profile-card">
-                    <div class="card-header">
-                        <div class="card-icon">
+                    <!-- Password Section (Integrated) -->
+                    <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color);">
+                        <button type="button" onclick="togglePasswordSection()" style="background: var(--bg-body); border: 1px solid var(--border-color); color: var(--text-main); padding: 1rem 1.5rem; border-radius: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 0.75rem; width: 100%; text-align: left;">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                            Update your password
+                            <svg id="pwd-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-inline-start: auto; transition: transform 0.2s;"><path d="M6 9l6 6 6-6"/></svg>
+                        </button>
+
+                        <div id="password-fields" style="display: none; background: var(--bg-body); border: 1px solid var(--border-color); border-radius: 1rem; padding: 1.5rem; margin-top: 0.5rem;">
+                            <div style="display: flex; flex-direction: column; gap: 1.5rem; max-width: 500px;">
+                                <div class="form-group">
+                                    <label class="form-label">Old Password</label>
+                                    <input type="password" name="old_password" class="form-control" autocomplete="current-password">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">{{ __('messages.new_password') }}</label>
+                                    <input type="password" name="password" class="form-control" autocomplete="new-password">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">{{ __('messages.confirm_password') }}</label>
+                                    <input type="password" name="password_confirmation" class="form-control">
+                                </div>
+                            </div>
                         </div>
-                        <h3 class="card-title">{{ __('messages.security_password') }}</h3>
                     </div>
-                    
-                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">{{ __('messages.leave_blank_password') }}</p>
-                    
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
-                        <div class="form-group">
-                            <label class="form-label">{{ __('messages.new_password') }}</label>
-                            <input type="password" name="password" class="form-control" autocomplete="new-password">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label">{{ __('messages.confirm_password') }}</label>
-                            <input type="password" name="password_confirmation" class="form-control">
-                        </div>
+
+                    <div id="account-actions" style="display: none; text-align: end; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-color);">
+                        <button type="button" onclick="cancelAccountEdit()" style="background: transparent; border: none; color: var(--text-muted); font-weight: 600; padding: 0.75rem 1.5rem; cursor: pointer; margin-inline-end: 0.5rem;">
+                            {{ __('messages.cancel') }}
+                        </button>
+                        <button type="submit" class="btn-save">
+                            {{ __('messages.save') }}
+                        </button>
                     </div>
                 </div>
 
-                <div style="text-align: end; margin-top: 1rem;">
+                <div id="main-update-btn" style="text-align: end; margin-top: 1rem;">
                     <button type="submit" class="btn-save">
                         {{ __('messages.update_profile') }}
                     </button>
@@ -882,6 +912,70 @@
 </div>
 
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const countryCode = document.getElementById('country-code');
+        const localPhone = document.getElementById('local-phone');
+        const inputPhone = document.getElementById('input-phone');
+
+        function updateHiddenPhone() {
+            if(countryCode && localPhone && inputPhone) {
+                inputPhone.value = localPhone.value ? countryCode.value + localPhone.value : '';
+            }
+        }
+        
+        if(countryCode) countryCode.addEventListener('change', updateHiddenPhone);
+        if(localPhone) localPhone.addEventListener('input', updateHiddenPhone);
+    });
+
+    let originalAccountValues = {};
+    function enableAccountEdit() {
+        document.querySelectorAll('.account-input').forEach(input => {
+            originalAccountValues[input.id] = input.value;
+            input.removeAttribute('readonly');
+            input.removeAttribute('disabled');
+            input.style.backgroundColor = 'var(--bg-card)';
+            input.style.cursor = 'text';
+            input.style.opacity = '1';
+        });
+        document.getElementById('btn-edit-account').style.display = 'none';
+        document.getElementById('account-actions').style.display = 'block';
+        const mainBtn = document.getElementById('main-update-btn');
+        if(mainBtn) mainBtn.style.display = 'none';
+        document.getElementById('input-name').focus();
+    }
+
+    function cancelAccountEdit() {
+        document.querySelectorAll('.account-input').forEach(input => {
+            if (originalAccountValues[input.id] !== undefined) {
+                input.value = originalAccountValues[input.id];
+            }
+            if (input.tagName === 'SELECT') {
+                input.setAttribute('disabled', 'disabled');
+            } else {
+                input.setAttribute('readonly', 'readonly');
+            }
+            input.style.backgroundColor = 'var(--bg-body)';
+            input.style.cursor = 'not-allowed';
+            input.style.opacity = '0.8';
+        });
+        document.getElementById('btn-edit-account').style.display = 'flex';
+        document.getElementById('account-actions').style.display = 'none';
+        const mainBtn = document.getElementById('main-update-btn');
+        if(mainBtn) mainBtn.style.display = 'block';
+    }
+
+    function togglePasswordSection() {
+        const fields = document.getElementById('password-fields');
+        const chevron = document.getElementById('pwd-chevron');
+        if (fields.style.display === 'none') {
+            fields.style.display = 'block';
+            chevron.style.transform = 'rotate(180deg)';
+        } else {
+            fields.style.display = 'none';
+            chevron.style.transform = 'rotate(0deg)';
+        }
+    }
+
     function switchSection(section) {
         document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
         const activeNav = document.getElementById('nav-' + section);

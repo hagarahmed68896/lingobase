@@ -34,18 +34,18 @@
                     </div>
 
                     <div style="margin-bottom: 1.5rem;">
-                        <label style="display: block; font-size: 0.85rem; font-weight: 700; color: #4b5563; margin-bottom: 0.5rem;">Explanation (Direct Instruction)</label>
+                        <label style="display: block; font-size: 0.85rem; font-weight: 700; color: #4b5563; margin-bottom: 0.5rem;">English Content</label>
                         <textarea name="explanation" class="search-input" style="width: 100%; height: 350px; line-height: 1.6; resize: vertical;" required>{{ $lesson->explanation }}</textarea>
                     </div>
                 </div>
 
-                <!-- Arabic Illustration Section -->
+                <!-- Arabic Content Section -->
                 <div style="background: #fffbeb; padding: 2rem; border-radius: 1.5rem; border: 1px solid #fde68a; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
                     <h3 style="font-size: 1.1rem; font-weight: 700; color: #92400e; margin: 0 0 1.5rem 0; display: flex; align-items: center; gap: 0.5rem;">
                         <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/></svg>
-                        Arabic Illustration (Tips & Comments)
+                        Arabic Content
                     </h3>
-                    <p style="color: #b45309; font-size: 0.85rem; margin: -1rem 0 1.5rem 0;">Helping learners understand context through their native language.</p>
+                    <p style="color: #b45309; font-size: 0.85rem; margin: -1rem 0 1.5rem 0;">Provide the complete lesson content in Arabic here.</p>
                     
                     <textarea name="arabic_explanation" class="search-input" style="width: 100%; height: 200px; direction: rtl; line-height: 1.8; border-color: #fde68a;">{{ $lesson->arabic_explanation }}</textarea>
                 </div>

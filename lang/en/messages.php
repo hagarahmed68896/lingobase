@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'free_resources' => 'Free Resources',
+    'english_grammar_bank' => 'English Grammar Bank',
+    'english_stories' => 'English Stories',
+    'about_lingobase' => 'About LingoBase',
     'grammar_bank' => 'Grammar Bank',
     'stories' => 'Stories',
     'my_profile' => 'My Profile',

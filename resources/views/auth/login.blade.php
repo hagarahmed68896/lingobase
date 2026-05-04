@@ -4,6 +4,12 @@
 <div style="max-width: 400px; margin: 4rem auto; background: var(--bg-card); padding: 2rem; border-radius: 1rem; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);">
     <h2 style="text-align: center; color: var(--text-main); margin-bottom: 2rem;">Welcome Back</h2>
     
+    @if(session('success'))
+        <div style="background: #d1fae5; color: #065f46; border: 1px solid #34d399; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1.5rem; font-size: 0.9rem; font-weight: 500;">
+            {{ session('success') }}
+        </div>
+    @endif
+    
     <form method="POST" action="{{ route('login') }}">
         @csrf
         

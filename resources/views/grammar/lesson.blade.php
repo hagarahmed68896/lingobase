@@ -155,6 +155,56 @@
         font-weight: 700;
         display: none;
     }
+    .lesson-lang-switcher {
+        display: inline-flex;
+        background: #f1f5f9;
+        border-radius: 2rem;
+        padding: 0.25rem;
+    }
+    .lesson-lang-btn {
+        background: transparent;
+        border: none;
+        padding: 0.4rem 1.25rem;
+        border-radius: 2rem;
+        font-weight: 600;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .lesson-lang-btn.active {
+        background: var(--primary);
+        color: white;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .markdown-content table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 1.5rem;
+    }
+    .markdown-content th, .markdown-content td {
+        border: 1px solid var(--border-color);
+        padding: 0.75rem;
+        text-align: left;
+    }
+    .markdown-content th {
+        background-color: var(--bg-body);
+        font-weight: 700;
+    }
+    .markdown-content ul, .markdown-content ol {
+        padding-left: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    .markdown-content p {
+        margin-bottom: 1rem;
+    }
+    [dir="rtl"] .markdown-content th, [dir="rtl"] .markdown-content td {
+        text-align: right;
+    }
+    [dir="rtl"] .markdown-content ul, [dir="rtl"] .markdown-content ol {
+        padding-right: 1.5rem;
+        padding-left: 0;
+    }
     @media (max-width: 1024px) {
         .lesson-layout { grid-template-columns: 1fr; }
         .quiz-sidebar { position: static; }
@@ -194,17 +244,24 @@
 
 <div class="lesson-layout">
     <div class="content-card">
-        <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid #f3f4f6;">Lesson Content</h2>
-        <div class="lesson-text">
-            {!! nl2br(e($lesson->explanation)) !!}
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f3f4f6; padding-bottom: 1rem; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+            <h2 style="font-size: 1.5rem; font-weight: 700; margin: 0;">Lesson Content</h2>
+            
+            @if(!empty(trim($lesson->arabic_explanation)))
+            <div class="lesson-lang-switcher">
+                <button id="btn-lesson-en" onclick="setLessonLang('en')" class="lesson-lang-btn active">English</button>
+                <button id="btn-lesson-ar" onclick="setLessonLang('ar')" class="lesson-lang-btn">العربية</button>
+            </div>
+            @endif
         </div>
 
-        @if(app()->getLocale() == 'ar' && $lesson->arabic_explanation)
-            <div class="arabic-illustration" style="margin-top: 3rem; padding-top: 2rem; border-top: 1px dashed #e5e7eb; direction: rtl; text-align: right;">
-                <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--primary); margin-bottom: 1rem;">توضيح بالعربية</h3>
-                <div style="font-size: 1.1rem; line-height: 1.8; color: #4b5563;">
-                    {!! nl2br(e($lesson->arabic_explanation)) !!}
-                </div>
+        <div id="lesson-content-en" class="lesson-text markdown-content" style="display: block;">
+            {!! \Illuminate\Support\Str::markdown($lesson->explanation ?? '') !!}
+        </div>
+
+        @if(!empty(trim($lesson->arabic_explanation)))
+            <div id="lesson-content-ar" class="lesson-text markdown-content" style="display: none; direction: rtl; text-align: right; line-height: 1.9;">
+                {!! \Illuminate\Support\Str::markdown($lesson->arabic_explanation ?? '') !!}
             </div>
         @endif
     </div>
@@ -246,6 +303,20 @@
 
 @section('scripts')
 <script>
+function setLessonLang(lang) {
+    if (lang === 'en') {
+        document.getElementById('lesson-content-en').style.display = 'block';
+        document.getElementById('lesson-content-ar').style.display = 'none';
+        document.getElementById('btn-lesson-en').classList.add('active');
+        document.getElementById('btn-lesson-ar').classList.remove('active');
+    } else {
+        document.getElementById('lesson-content-en').style.display = 'none';
+        document.getElementById('lesson-content-ar').style.display = 'block';
+        document.getElementById('btn-lesson-en').classList.remove('active');
+        document.getElementById('btn-lesson-ar').classList.add('active');
+    }
+}
+
 function checkAuth(e) {
     @guest
         e.preventDefault();

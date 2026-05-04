@@ -24,6 +24,13 @@ class AuthController extends Controller
         ]);
 
         if (Auth::attempt($credentials)) {
+            if (!Auth::user()->hasVerifiedEmail()) {
+                Auth::logout();
+                return back()->withErrors([
+                    'email' => 'Please check your email to verify your account before logging in.',
+                ]);
+            }
+
             $request->session()->regenerate();
 
             if (Auth::user()->is_admin) {
@@ -59,9 +66,9 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        Auth::login($user);
+        event(new \Illuminate\Auth\Events\Registered($user));
 
-        return redirect('/profile');
+        return redirect()->route('login')->with('success', 'Registration successful! Please check your email to verify your account.');
     }
 
     // Handle Logout

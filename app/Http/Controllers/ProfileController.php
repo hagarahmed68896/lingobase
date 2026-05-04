@@ -79,6 +79,16 @@ class ProfileController extends Controller
 
         try {
             $request->validate($rules);
+            
+            if ($request->filled('password')) {
+                $request->validate([
+                    'old_password' => ['required', function ($attribute, $value, $fail) use ($user) {
+                        if (!\Illuminate\Support\Facades\Hash::check($value, $user->password)) {
+                            $fail(__('messages.old_password_incorrect') ?? 'The provided old password does not match our records.');
+                        }
+                    }],
+                ]);
+            }
         } catch (\Illuminate\Validation\ValidationException $e) {
             \Illuminate\Support\Facades\Log::error('Profile validation failed', ['errors' => $e->errors()]);
             throw $e;

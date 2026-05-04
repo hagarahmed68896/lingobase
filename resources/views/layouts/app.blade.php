@@ -306,8 +306,19 @@
         </button>
 
         <nav class="nav-links" id="nav-links">
-            <a href="{{ route('grammar.index', ['language' => 'english']) }}">{{ __('messages.grammar_bank') }}</a>
-            <a href="{{ route('stories.index', ['language' => 'english']) }}">{{ __('messages.stories') }}</a>
+            <!-- New Free Resources Dropdown -->
+            <div class="dropdown">
+                <button class="btn dropdown-toggle" style="border: none; background: transparent; padding: 0.5rem 1rem; border-radius: 0.5rem; font-weight: 500; font-size: 0.95rem; color: var(--nav-link);">
+                    {{ __('messages.free_resources') }}
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-inline-start: 0.25rem; vertical-align: middle;"><path d="M6 9l6 6 6-6"/></svg>
+                </button>
+                <div class="dropdown-content">
+                    <a href="{{ route('grammar.index', ['language' => 'english']) }}">{{ __('messages.english_grammar_bank') }}</a>
+                    <a href="{{ route('stories.index', ['language' => 'english']) }}">{{ __('messages.english_stories') }}</a>
+                </div>
+            </div>
+
+            <a href="{{ route('about') }}">{{ __('messages.about_lingobase') }}</a>
             
 
             <!-- Language Switcher -->
