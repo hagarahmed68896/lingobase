@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'english_evaluation_test' => 'Prueba de Evaluación de Inglés',
+    'free_resources' => 'Recursos Gratuitos',
+    'english_grammar_bank' => 'Banco de Gramática Inglesa',
+    'english_stories' => 'Historias en Inglés',
     'grammar_bank' => 'Banco de Gramática',
     'stories' => 'Historias',
     'my_profile' => 'Mi Perfil',
@@ -52,4 +56,6 @@ return [
     'terms_of_service' => 'Términos de servicio',
     'all_rights_reserved' => 'Todos los derechos reservados.',
     'brand_description' => 'Tu viaje hacia la fluidez en inglés comienza aquí. Lecciones interactivas, historias inmersivas y seguimiento del progreso.',
+    'placement_test_status' => 'Estado de la Prueba de Evaluación',
+    'start_placement_test' => 'Comenzar Prueba de Evaluación de Inglés',
 ];

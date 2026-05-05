@@ -316,6 +316,7 @@
                 <div class="dropdown-content">
                     <a href="{{ route('grammar.index', ['language' => 'english']) }}">{{ __('messages.english_grammar_bank') }}</a>
                     <a href="{{ route('stories.index', ['language' => 'english']) }}">{{ __('messages.english_stories') }}</a>
+                    <a href="{{ route('grammar.placement') }}">{{ __('messages.english_evaluation_test') }}</a>
                 </div>
             </div>
 

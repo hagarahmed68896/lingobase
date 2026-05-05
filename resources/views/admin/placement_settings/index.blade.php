@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Placement Test Settings')
+@section('title', 'Evaluation Test Settings')
 
 @section('content')
 <div class="table-container" style="border: none; background: transparent; box-shadow: none; overflow: visible;">
@@ -12,7 +12,7 @@
                     System Config
                 </div>
                 <h1 style="font-size: 2.25rem; font-weight: 800; color: #111827; margin: 0; line-height: 1.2;">Test Configuration</h1>
-                <p style="color: #6b7280; font-size: 1rem; margin: 0.5rem 0 0 0; max-width: 500px;">Adjust the number of questions per level and section for the adaptive placement test.</p>
+                <p style="color: #6b7280; font-size: 1rem; margin: 0.5rem 0 0 0; max-width: 500px;">Adjust the number of questions per level and section for the adaptive evaluation test.</p>
             </div>
             <a href="{{ route('admin.placement-questions.index') }}" class="btn" style="background: #f3f4f6; color: #374151; padding: 0.875rem 1.75rem; border-radius: 1rem; display: flex; align-items: center; gap: 0.75rem; font-weight: 700;">
                 <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>

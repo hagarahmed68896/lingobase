@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Manage Placement Tests')
+@section('title', 'Manage English Evaluation Tests')
 
 @section('content')
 <div class="table-container" style="border: none; background: transparent; box-shadow: none; overflow: visible;">
@@ -15,8 +15,8 @@
                     <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
                     Evaluation System
                 </div>
-                <h1 style="font-size: 2.25rem; font-weight: 800; color: #111827; margin: 0; line-height: 1.2;">Placement Questions</h1>
-                <p style="color: #6b7280; font-size: 1rem; margin: 0.5rem 0 0 0; max-width: 500px;">Curate and manage the adaptive placement test questions across all levels and sections.</p>
+                <h1 style="font-size: 2.25rem; font-weight: 800; color: #111827; margin: 0; line-height: 1.2;">Evaluation Questions</h1>
+                <p style="color: #6b7280; font-size: 1rem; margin: 0.5rem 0 0 0; max-width: 500px;">Curate and manage the adaptive evaluation test questions across all levels and sections.</p>
             </div>
             <div style="display: flex; gap: 1rem;">
                 <a href="{{ route('admin.placement-settings.index') }}" class="btn" style="background: #f8fafc; color: #64748b; border: 1px solid #e2e8f0; padding: 0.875rem 1.5rem; border-radius: 1rem; display: flex; align-items: center; gap: 0.75rem; font-weight: 700; transition: all 0.3s ease;">

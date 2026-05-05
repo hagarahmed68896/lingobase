@@ -849,7 +849,7 @@
         
         <!-- Onboarding / Intro -->
         <div id="scene-intro" class="onboard-lux">
-            <h2 style="font-size: 2.5rem; font-weight: 800; color: var(--text-main); margin-bottom: 1.5rem; line-height: 1.2;">Determine Your <span style="color: #009150;">English Level</span></h2>
+            <h2 style="font-size: 2.5rem; font-weight: 800; color: var(--text-main); margin-bottom: 1.5rem; line-height: 1.2;">{{ __('messages.english_evaluation_test') }}</h2>
             <p style="color: #64748b; font-size: 1.2rem; line-height: 1.7; margin-bottom: 2.5rem;">{{ __('messages.placement_intro') }}</p>
             <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 3rem; text-align: left; background: #f8fafc; padding: 2rem; border-radius: 1.5rem;">
                 <div style="display: flex; gap: 1rem; align-items: flex-start;">
@@ -867,7 +867,7 @@
             </div>
             
             <button onclick="handleLaunch()" class="btn-lux btn-lux-primary" style="padding: 1.25rem 4rem; font-size: 1.1rem;">
-                Start Assessment
+                {{ __('messages.start_placement_test') }}
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </button>
         </div>

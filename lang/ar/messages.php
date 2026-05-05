@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'english_evaluation_test' => 'اختبار تقييم اللغة الإنجليزية',
     'grammar_bank' => 'بنك القواعد',
     'stories' => 'القصص',
     'my_profile' => 'ملفي الشخصي',
@@ -73,14 +74,14 @@ return [
     'grammar_lessons' => 'دروس القواعد',
     'no_fav_lessons' => 'لا توجد دروس مفضلة بعد.',
     'no_fav_stories' => 'لا توجد قصص مفضلة بعد.',
-    'placement_test_status' => 'حالة اختبار تحديد المستوى',
+    'placement_test_status' => 'حالة اختبار التقييم',
     'active_level' => 'المستوى الحالي',
     'overall_score' => 'النتيجة الإجمالية',
     'retake_assessment' => 'إعادة الاختبار',
     'recommended_steps' => 'الخطوات التالية الموصى بها',
     'no_assessment_data' => 'لا توجد بيانات تقييم',
     'no_assessment_desc' => 'افتح توصيات التعلم الشخصية من خلال تحديد مستواك في اللغة الإنجليزية أولاً.',
-    'start_placement_test' => 'ابدأ اختبار تحديد المستوى',
+    'start_placement_test' => 'ابدأ اختبار تقييم الإنجليزية',
     'appearance' => 'المظهر',
     'appearance_desc' => 'اختر المظهر المفضل للتطبيق.',
     'light_mode' => 'الوضع الفاتح',

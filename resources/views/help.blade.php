@@ -17,15 +17,15 @@
         <div style="display: grid; gap: 1.5rem;">
             <div class="card" style="padding: 2rem;">
                 <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.75rem;">How do I determine my English level?</h3>
-                <p style="color: var(--text-muted); margin: 0;">You can take our adaptive Placement Test from the dashboard or your profile. It takes about 30 minutes and evaluates your grammar, vocabulary, listening, and reading skills.</p>
+                <p style="color: var(--text-muted); margin: 0;">You can take our adaptive English Evaluation Test from the dashboard or your profile. It takes about 30 minutes and evaluates your grammar, vocabulary, listening, and reading skills.</p>
             </div>
             <div class="card" style="padding: 2rem;">
-                <h3 style="font-size: 1.15rem; font-weight: 700; color: #1e293b; margin-bottom: 0.75rem;">Can I retake the placement test?</h3>
+                <h3 style="font-size: 1.15rem; font-weight: 700; color: #1e293b; margin-bottom: 0.75rem;">Can I retake the evaluation test?</h3>
                 <p style="color: #64748b; margin: 0;">Yes, you can retake the assessment every 24 hours to track your progress as you learn.</p>
             </div>
             <div class="card" style="padding: 2rem;">
                 <h3 style="font-size: 1.15rem; font-weight: 700; color: #1e293b; margin-bottom: 0.75rem;">Are the stories appropriate for my level?</h3>
-                <p style="color: #64748b; margin: 0;">Our stories are categorized by CEFR levels (A1-C1). After taking the placement test, we'll recommend content that matches your current proficiency.</p>
+                <p style="color: #64748b; margin: 0;">Our stories are categorized by CEFR levels (A1-C1). After taking the evaluation test, we'll recommend content that matches your current proficiency.</p>
             </div>
         </div>
     </div>
