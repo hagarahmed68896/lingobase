@@ -4,8 +4,6 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
-use Illuminate\Auth\Notifications\VerifyEmail;
-use Illuminate\Notifications\Messages\MailMessage;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -27,13 +25,5 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::useBootstrapFive();
 
-        VerifyEmail::toMailUsing(function ($notifiable, $url) {
-            return (new MailMessage)
-                ->subject('Welcome to Lingobase - Verify Your Email')
-                ->greeting('Welcome to Lingobase')
-                ->line('Hi ' . $notifiable->name . ',')
-                ->line('Please verify your email address by clicking the link below:')
-                ->action('Verify Email Address', $url);
-        });
     }
 }

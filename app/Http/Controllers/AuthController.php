@@ -24,12 +24,6 @@ class AuthController extends Controller
         ]);
 
         if (Auth::attempt($credentials)) {
-            if (!Auth::user()->hasVerifiedEmail()) {
-                Auth::logout();
-                return back()->withErrors([
-                    'email' => 'Please check your email to verify your account before logging in.',
-                ]);
-            }
 
             $request->session()->regenerate();
 
@@ -66,9 +60,10 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        event(new \Illuminate\Auth\Events\Registered($user));
+        Auth::login($user);
+        $request->session()->regenerate();
 
-        return redirect()->route('login')->with('success', 'Registration successful! Please check your email to verify your account.');
+        return redirect()->route('profile.index')->with('success', 'Registration successful! Welcome to Lingobase.');
     }
 
     // Handle Logout

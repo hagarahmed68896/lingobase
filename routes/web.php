@@ -43,21 +43,6 @@ Route::get('/register', [AuthController::class, 'showRegister'])->name('register
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// Email Verification Route
-Route::get('/email/verify/{id}/{hash}', function (Request $request, $id, $hash) {
-    $user = \App\Models\User::findOrFail($id);
-
-    if (! hash_equals((string) $hash, sha1($user->getEmailForVerification()))) {
-        abort(403);
-    }
-
-    if (! $user->hasVerifiedEmail()) {
-        $user->markEmailAsVerified();
-        event(new \Illuminate\Auth\Events\Verified($user));
-    }
-
-    return redirect()->route('login')->with('success', 'Your email has been successfully verified! You can now log in.');
-})->middleware(['signed'])->name('verification.verify');
 
 // Basic Public Index Routes
 Route::prefix('grammar')->group(function () {
