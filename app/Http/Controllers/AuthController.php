@@ -23,6 +23,8 @@ class AuthController extends Controller
             'password' => ['required'],
         ]);
 
+        $credentials['email'] = strtolower(trim($credentials['email']));
+
         if (Auth::attempt($credentials)) {
 
             $request->session()->regenerate();
@@ -56,7 +58,7 @@ class AuthController extends Controller
 
         $user = User::create([
             'name' => $request->name,
-            'email' => $request->email,
+            'email' => strtolower(trim($request->email)),
             'password' => Hash::make($request->password),
         ]);
 

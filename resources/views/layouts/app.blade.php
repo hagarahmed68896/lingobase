@@ -216,12 +216,13 @@
                 top: 100%;
                 left: 0;
                 right: 0;
-                background: var(--white);
+                background: var(--header-bg);
                 flex-direction: column;
                 padding: 1rem;
-                border-bottom: 1px solid var(--border);
+                border-bottom: 1px solid var(--border-color);
                 gap: 1rem;
                 box-shadow: var(--shadow-md);
+                z-index: 1000;
             }
             .nav-links.active {
                 display: flex;
@@ -234,7 +235,7 @@
                 width: 100%;
                 box-shadow: none;
                 border: none;
-                background: #f9fafb;
+                background: var(--bg-body);
                 margin-top: 0.5rem;
             }
         }
@@ -265,12 +266,12 @@
 
         /* RTL Specific Adjustments */
         [dir="rtl"] .nav-links {
-            left: auto;
-            right: -100%;
+            left: 0;
+            right: 0;
         }
         [dir="rtl"] .nav-links.active {
             right: 0;
-            left: auto;
+            left: 0;
         }
         [dir="rtl"] .dropdown-content {
             right: auto;
@@ -432,7 +433,8 @@
             const navLinks = document.getElementById('nav-links');
             
             if (mobileToggle) {
-                mobileToggle.addEventListener('click', function() {
+                mobileToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
                     navLinks.classList.toggle('active');
                 });
             }
