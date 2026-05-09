@@ -696,55 +696,60 @@
                         <h3 style="margin: 0; font-size: 1.5rem; font-weight: 800; color: var(--text-main);">{{ __('messages.placement_test_status') }}</h3>
                         <p style="margin: 0.25rem 0 0 0; color: var(--text-muted); font-size: 0.95rem;">Determined based on your latest activity</p>
                     </div>
-                    @if($latestPlacementTest)
+                    @if($placementTests->count() > 0)
                         <div style="text-align: end;">
                             <span style="background: var(--primary); color: white; padding: 0.5rem 1.25rem; border-radius: 2rem; font-weight: 700; font-size: 0.85rem; display: inline-block;">
                                 {{ __('messages.active_level') }}
                             </span>
-                            <div style="color: var(--text-muted); font-size: 0.8rem; margin-top: 0.5rem;">{{ __('messages.updated_at') }} {{ $latestPlacementTest->updated_at->diffForHumans() }}</div>
+                            <div style="color: var(--text-muted); font-size: 0.8rem; margin-top: 0.5rem;">{{ __('messages.updated_at') }} {{ $placementTests->first()->updated_at->diffForHumans() }}</div>
                         </div>
                     @endif
                 </div>
 
-                @if($latestPlacementTest)
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 3rem; align-items: start;">
-                        <!-- Level Circle -->
-                        <div style="text-align: center;">
-                            <div style="width: 180px; height: 180px; border-radius: 50%; border: 10px solid var(--accent); display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0 auto 1.5rem; background: var(--bg-card); box-shadow: inset 0 2px 10px rgba(0,0,0,0.05);">
-                                <div style="font-size: 1rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: -0.25rem;">{{ __('messages.level') }}</div>
-                                <div style="font-size: 4rem; font-weight: 900; color: var(--primary); line-height: 1;">{{ $latestPlacementTest->detected_level }}</div>
-                            </div>
-                            <div style="font-size: 1.25rem; font-weight: 700; color: var(--text-main);">{{ __('messages.overall_score') }}: {{ round($latestPlacementTest->percentage) }}%</div>
-                            <a href="{{ route('grammar.placement') }}" style="display: inline-block; margin-top: 1.5rem; color: var(--primary); font-weight: 700; text-decoration: none; font-size: 0.9rem; border-bottom: 2px solid var(--primary);">{{ __('messages.retake_assessment') }} &rarr;</a>
-                        </div>
-
-                        <!-- Recommendations -->
-                        <div>
-                            <h4 style="margin: 0 0 1.5rem 0; font-size: 1.1rem; font-weight: 800; color: var(--text-main); text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 0.5rem;">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color: var(--primary);"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                                {{ __('messages.recommended_steps') }}
-                            </h4>
-                            
-                            @if(isset($recommendations) && count($recommendations) > 0)
-                                <div style="display: grid; gap: 1rem;">
-                                    @foreach($recommendations as $rec)
-                                        <a href="{{ route('grammar.lesson', ['language' => $rec->grammarLevel->language->slug, 'level' => $rec->grammarLevel->slug, 'lesson' => $rec->slug]) }}" 
-                                           style="display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 1.5rem; background: var(--bg-body); border: 1px solid var(--border-color); border-radius: 1rem; text-decoration: none; transition: all 0.2s;"
-                                           onmouseover="this.style.borderColor='var(--primary)'; this.style.background='var(--bg-card)'; this.style.transform='translateX(4px)'"
-                                           onmouseout="this.style.borderColor='var(--border-color)'; this.style.background='var(--bg-body)'; this.style.transform='none'">
-                                            <div>
-                                                <div style="font-weight: 700; color: var(--text-main); font-size: 1.05rem;">{{ $rec->title }}</div>
-                                                <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">Grammar Lesson • {{ $latestPlacementTest->detected_level }}</div>
-                                            </div>
-                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color: var(--text-muted);"><path d="M9 18l6-6-6-6"/></svg>
-                                        </a>
-                                    @endforeach
+                @if($placementTests->count() > 0)
+                    @foreach($placementTests as $test)
+                        <div style="margin-bottom: 4rem; padding-bottom: 2rem; border-bottom: 1px dashed var(--border-color);">
+                            <h3 style="margin-bottom: 2rem; color: var(--primary); font-size: 1.25rem;">{{ $test->language ? $test->language->name : 'General' }} Evaluation</h3>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 3rem; align-items: start;">
+                                <!-- Level Circle -->
+                                <div style="text-align: center;">
+                                    <div style="width: 180px; height: 180px; border-radius: 50%; border: 10px solid var(--accent); display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0 auto 1.5rem; background: var(--bg-card); box-shadow: inset 0 2px 10px rgba(0,0,0,0.05);">
+                                        <div style="font-size: 1rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: -0.25rem;">{{ __('messages.level') }}</div>
+                                        <div style="font-size: 4rem; font-weight: 900; color: var(--primary); line-height: 1;">{{ $test->detected_level }}</div>
+                                    </div>
+                                    <div style="font-size: 1.25rem; font-weight: 700; color: var(--text-main);">{{ __('messages.overall_score') }}: {{ round($test->percentage ?? ($test->total_score / 66)*100) }}%</div>
+                                    <a href="{{ $test->language ? route('grammar.placement', ['language' => $test->language->slug]) : '#' }}" style="display: inline-block; margin-top: 1.5rem; color: var(--primary); font-weight: 700; text-decoration: none; font-size: 0.9rem; border-bottom: 2px solid var(--primary);">{{ __('messages.retake_assessment') }} &rarr;</a>
                                 </div>
-                            @else
-                                <p style="color: #64748b; font-style: italic;">Complete more lessons to see personalized suggestions here.</p>
-                            @endif
+
+                                <!-- Recommendations -->
+                                <div>
+                                    <h4 style="margin: 0 0 1.5rem 0; font-size: 1.1rem; font-weight: 800; color: var(--text-main); text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 0.5rem;">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color: var(--primary);"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                                        {{ __('messages.recommended_steps') }}
+                                    </h4>
+                                    
+                                    @if($test->recommendations && count($test->recommendations) > 0)
+                                        <div style="display: grid; gap: 1rem;">
+                                            @foreach($test->recommendations as $rec)
+                                                <a href="{{ route('grammar.lesson', ['language' => $test->language->slug ?? 'en', 'level' => $rec->grammarLevel->slug, 'lesson' => $rec->slug]) }}" 
+                                                   style="display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 1.5rem; background: var(--bg-body); border: 1px solid var(--border-color); border-radius: 1rem; text-decoration: none; transition: all 0.2s;"
+                                                   onmouseover="this.style.borderColor='var(--primary)'; this.style.background='var(--bg-card)'; this.style.transform='translateX(4px)'"
+                                                   onmouseout="this.style.borderColor='var(--border-color)'; this.style.background='var(--bg-body)'; this.style.transform='none'">
+                                                    <div>
+                                                        <div style="font-weight: 700; color: var(--text-main); font-size: 1.05rem;">{{ $rec->title }}</div>
+                                                        <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">Grammar Lesson • {{ $test->detected_level }}</div>
+                                                    </div>
+                                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color: var(--text-muted);"><path d="M9 18l6-6-6-6"/></svg>
+                                                </a>
+                                            @endforeach
+                                        </div>
+                                    @else
+                                        <p style="color: #64748b; font-style: italic;">Complete more lessons to see personalized suggestions here.</p>
+                                    @endif
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    @endforeach
                 @else
                     <div style="text-align: center; padding: 3rem 1rem;">
                         <div style="width: 80px; height: 80px; background: var(--bg-body); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
@@ -752,7 +757,7 @@
                         </div>
                         <h4 style="margin: 0 0 0.75rem 0; font-size: 1.25rem; font-weight: 800; color: var(--text-main);">{{ __('messages.no_assessment_data') }}</h4>
                         <p style="color: var(--text-muted); margin-bottom: 2rem; max-width: 400px; margin-left: auto; margin-right: auto;">{{ __('messages.no_assessment_desc') }}</p>
-                        <a href="{{ route('grammar.placement') }}" class="btn-save" style="display: inline-block; text-decoration: none; border-radius: 2rem; padding: 1rem 2.5rem;">{{ __('messages.start_placement_test') }}</a>
+                        <a href="/" class="btn-save" style="display: inline-block; text-decoration: none; border-radius: 2rem; padding: 1rem 2.5rem;">{{ __('messages.start_placement_test') }}</a>
                     </div>
                 @endif
             </div>

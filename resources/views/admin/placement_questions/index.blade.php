@@ -65,6 +65,15 @@
                 </select>
             </div>
             <div>
+                <label style="display: block; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: #4b5563; margin-bottom: 0.5rem; letter-spacing: 0.05em;">Language</label>
+                <select name="language_id" class="search-input" style="width: 100%; border-radius: 0.75rem; border-color: #e5e7eb; padding-top: 0.75rem; padding-bottom: 0.75rem; cursor: pointer;" onchange="this.form.submit()">
+                    <option value="">All Languages</option>
+                    @foreach($languages as $language)
+                        <option value="{{ $language->id }}" {{ request('language_id') == $language->id ? 'selected' : '' }}>{{ $language->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div>
                 <label style="display: block; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: #4b5563; margin-bottom: 0.5rem; letter-spacing: 0.05em;">Test Section</label>
                 <select name="section" class="search-input" style="width: 100%; border-radius: 0.75rem; border-color: #e5e7eb; padding-top: 0.75rem; padding-bottom: 0.75rem; cursor: pointer;" onchange="this.form.submit()">
                     <option value="">All Sections</option>
@@ -99,6 +108,7 @@
                     <tr style="background: #f8fafc;">
                         <th style="padding: 1.25rem 1.5rem; text-align: left; font-size: 0.75rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 2px solid #e2e8f0; width: 60px;">ID</th>
                         <th style="padding: 1.25rem 1.5rem; text-align: left; font-size: 0.75rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 2px solid #e2e8f0;">Question Content</th>
+                        <th style="padding: 1.25rem 1.5rem; text-align: center; font-size: 0.75rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 2px solid #e2e8f0;">Language</th>
                         <th style="padding: 1.25rem 1.5rem; text-align: center; font-size: 0.75rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 2px solid #e2e8f0;">Level</th>
                         <th style="padding: 1.25rem 1.5rem; text-align: center; font-size: 0.75rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 2px solid #e2e8f0;">Section</th>
                         <th style="padding: 1.25rem 1.5rem; text-align: center; font-size: 0.75rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 2px solid #e2e8f0;">Points</th>
@@ -132,6 +142,11 @@
                                     </div>
                                     @endif
                                 </div>
+                            </td>
+                            <td style="padding: 1.5rem; text-align: center; border-bottom: 1px solid #f1f5f9;">
+                                <span style="background: #f1f5f9; color: #475569; padding: 0.35rem 0.75rem; border-radius: 999px; font-size: 0.8rem; font-weight: 600;">
+                                    {{ $question->language ? $question->language->name : 'N/A' }}
+                                </span>
                             </td>
                             <td style="padding: 1.5rem; text-align: center; border-bottom: 1px solid #f1f5f9;">
                                 @php

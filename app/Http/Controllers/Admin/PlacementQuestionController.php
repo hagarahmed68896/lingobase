@@ -12,7 +12,11 @@ class PlacementQuestionController extends Controller
 {
     public function index(Request $request)
     {
-        $query = PlacementQuestion::query();
+        $query = PlacementQuestion::with('language');
+
+        if ($request->filled('language_id')) {
+            $query->where('language_id', $request->language_id);
+        }
 
         if ($request->filled('level')) {
             $query->where('level', $request->level);
@@ -35,16 +39,18 @@ class PlacementQuestionController extends Controller
         foreach ($sections as $section) {
             $stats[$section] = \App\Models\PlacementQuestion::where('section', $section)->count();
         }
+        $languages = \App\Models\Language::all();
 
-        return view('admin.placement_questions.index', compact('questions', 'levels', 'sections', 'stats'));
+        return view('admin.placement_questions.index', compact('questions', 'levels', 'sections', 'stats', 'languages'));
     }
 
     public function create()
     {
         $levels = ['A1', 'A2', 'B1', 'B2', 'C1'];
         $sections = ['grammar', 'vocabulary', 'reading', 'listening'];
+        $languages = \App\Models\Language::all();
         
-        return view('admin.placement_questions.create', compact('levels', 'sections'));
+        return view('admin.placement_questions.create', compact('levels', 'sections', 'languages'));
     }
 
     public function store(Request $request)
@@ -62,9 +68,10 @@ class PlacementQuestionController extends Controller
             'options' => 'required|array|min:2',
             'options.*.text' => 'required|string',
             'correct_option' => 'required|integer',
+            'language_id' => 'required|exists:languages,id',
         ]);
 
-        $data = $request->only(['level', 'section', 'question_text', 'points', 'skill', 'sub_skill', 'vocab_category', 'distractor_logic']);
+        $data = $request->only(['level', 'section', 'question_text', 'points', 'skill', 'sub_skill', 'vocab_category', 'distractor_logic', 'language_id']);
         
         if ($request->hasFile('media_file')) {
             $path = $request->file('media_file')->store('placement_audio', 'public');
@@ -88,9 +95,10 @@ class PlacementQuestionController extends Controller
     {
         $levels = ['A1', 'A2', 'B1', 'B2', 'C1'];
         $sections = ['grammar', 'vocabulary', 'reading', 'listening'];
+        $languages = \App\Models\Language::all();
         $placementQuestion->load('options');
         
-        return view('admin.placement_questions.edit', compact('placementQuestion', 'levels', 'sections'));
+        return view('admin.placement_questions.edit', compact('placementQuestion', 'levels', 'sections', 'languages'));
     }
 
     public function update(Request $request, PlacementQuestion $placementQuestion)
@@ -110,9 +118,10 @@ class PlacementQuestionController extends Controller
             'options.*.text' => 'required|string',
             'options.*.id' => 'nullable|exists:placement_options,id',
             'correct_option' => 'required|integer',
+            'language_id' => 'required|exists:languages,id',
         ]);
 
-        $data = $request->only(['level', 'section', 'question_text', 'points', 'skill', 'sub_skill', 'vocab_category', 'distractor_logic']);
+        $data = $request->only(['level', 'section', 'question_text', 'points', 'skill', 'sub_skill', 'vocab_category', 'distractor_logic', 'language_id']);
         
         if ($request->has('remove_media') && $request->remove_media) {
             if ($placementQuestion->media_url) {

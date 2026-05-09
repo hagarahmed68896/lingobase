@@ -15,4 +15,9 @@ class PlacementQuestion extends Model
     {
         return $this->hasMany(PlacementOption::class);
     }
+
+    public function language()
+    {
+        return $this->belongsTo(Language::class);
+    }
 }

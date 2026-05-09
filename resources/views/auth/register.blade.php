@@ -18,7 +18,7 @@
 
         <div style="margin-bottom: 1.5rem;">
             <label for="email" style="display: block; margin-bottom: 0.5rem; color: var(--text-main); font-weight: 500;">Email Address</label>
-            <input id="email" type="email" name="email" value="{{ old('email') }}" required
+            <input id="email" type="email" name="email" value="{{ old('email', request('email')) }}" required
                    style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); background: var(--bg-body); color: var(--text-main); border-radius: 0.5rem; font-size: 1rem; box-sizing: border-box;">
             @error('email')
                 <span style="color: #ef4444; font-size: 0.875rem; display: block; margin-top: 0.25rem;">{{ $message }}</span>

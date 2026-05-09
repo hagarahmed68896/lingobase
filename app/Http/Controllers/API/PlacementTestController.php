@@ -11,32 +11,37 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use App\Models\Language;
 
 class PlacementTestController extends Controller
 {
     // Settings will be fetched from database
 
-    public function start(Request $request)
+    public function start(Request $request, $languageSlug)
     {
         $request->validate([]);
 
         try {
             DB::beginTransaction();
 
-            $user = Auth::user();
-            $userId = $user ? $user->id : null;
+            $language = Language::where('slug', $languageSlug)->firstOrFail();
+            $languageId = $language->id;
 
             $user = Auth::user();
             $userId = $user ? $user->id : null;
 
             // 1. Select Grammar Questions
-            $grammarQuestions = $this->selectGrammarQuestions();
+            $grammarQuestions = $this->selectGrammarQuestions($languageId);
 
             // 2. Select Listening Questions
-            $listeningQuestions = PlacementQuestion::where('section', 'listening')->inRandomOrder()->limit(2)->pluck('id')->toArray();
+            $listeningQuestions = PlacementQuestion::where('section', 'listening')
+                ->where('language_id', $languageId)
+                ->inRandomOrder()->limit(2)->pluck('id')->toArray();
 
             // 3. Select Reading Questions
-            $readingQuestions = PlacementQuestion::where('section', 'reading')->inRandomOrder()->limit(2)->pluck('id')->toArray();
+            $readingQuestions = PlacementQuestion::where('section', 'reading')
+                ->where('language_id', $languageId)
+                ->inRandomOrder()->limit(2)->pluck('id')->toArray();
 
             // Merge sequences: Grammar -> Listening -> Reading
             $questionSequence = array_merge($grammarQuestions, $listeningQuestions, $readingQuestions);
@@ -44,6 +49,7 @@ class PlacementTestController extends Controller
             // Create Test Session
             $test = PlacementTest::create([
                 'user_id' => $userId,
+                'language_id' => $languageId,
                 'status' => 'in_progress',
                 'question_sequence' => $questionSequence,
                 'current_question_index' => 0,
@@ -80,7 +86,7 @@ class PlacementTestController extends Controller
         }
     }
 
-    private function selectGrammarQuestions()
+    private function selectGrammarQuestions($languageId)
     {
         $selectedIds = [];
         $usedSkills = []; 
@@ -100,6 +106,7 @@ class PlacementTestController extends Controller
             $levels = $levelsMap[$quotaGroup];
             
             $pool = PlacementQuestion::where('section', 'grammar')
+                ->where('language_id', $languageId)
                 ->whereIn('level', $levels)
                 ->inRandomOrder()
                 ->get();
@@ -123,7 +130,7 @@ class PlacementTestController extends Controller
         return $selectedIds;
     }
 
-    public function getQuestion(Request $request, $testId)
+    public function getQuestion(Request $request, $languageSlug, $testId)
     {
         $test = PlacementTest::findOrFail($testId);
         
@@ -144,7 +151,7 @@ class PlacementTestController extends Controller
         ]);
     }
 
-    public function navigateToQuestion(Request $request, $testId)
+    public function navigateToQuestion(Request $request, $languageSlug, $testId)
     {
         $request->validate([
             'question_index' => 'required|integer|min:0'
@@ -165,13 +172,13 @@ class PlacementTestController extends Controller
         ]);
     }
 
-    public function completeTest(Request $request, $testId)
+    public function completeTest(Request $request, $languageSlug, $testId)
     {
         $test = PlacementTest::findOrFail($testId);
         return $this->finishTest($test);
     }
 
-    public function submitAnswer(Request $request, $testId)
+    public function submitAnswer(Request $request, $languageSlug, $testId)
     {
         $request->validate([
             'question_id' => 'required|exists:placement_questions,id',
@@ -352,10 +359,14 @@ class PlacementTestController extends Controller
 
         // Get recommendations based on level
         $recommendations = [];
-        $levelModel = GrammarLevel::where('slug', 'LIKE', "%" . strtolower($finalLevel) . "%")->first();
+        $levelModel = GrammarLevel::where('language_id', $test->language_id)
+            ->where('slug', 'LIKE', "%" . strtolower($finalLevel) . "%")
+            ->first();
         // Fallback for A0 to A1 lessons
         if (!$levelModel && $finalLevel == 'A0') {
-            $levelModel = GrammarLevel::where('slug', 'LIKE', "%a1%")->first();
+            $levelModel = GrammarLevel::where('language_id', $test->language_id)
+                ->where('slug', 'LIKE', "%a1%")
+                ->first();
         }
         
         if ($levelModel) {

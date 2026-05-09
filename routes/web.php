@@ -38,6 +38,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::post('/api/check-email', [AuthController::class, 'checkEmail']);
 
 // Basic Public Index Routes
 Route::prefix('grammar')->group(function () {
@@ -47,8 +48,8 @@ Route::prefix('grammar')->group(function () {
 });
 
 // Placement Test (Public Intro)
-Route::get('grammar/placement-test', [App\Http\Controllers\PlacementController::class, 'index'])->name('grammar.placement');
-Route::prefix('grammar/placement-test')->group(function () {
+Route::get('{language}/placement-test', [App\Http\Controllers\PlacementController::class, 'index'])->name('grammar.placement');
+Route::prefix('{language}/placement-test')->group(function () {
     Route::post('/start', [App\Http\Controllers\API\PlacementTestController::class, 'start'])->name('grammar.placement.start');
     Route::get('/{testId}/question', [App\Http\Controllers\API\PlacementTestController::class, 'getQuestion']);
     Route::post('/{testId}/answer', [App\Http\Controllers\API\PlacementTestController::class, 'submitAnswer']);

@@ -30,10 +30,10 @@
                         {{ __('messages.get_started') }}
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                     </a>
-                    <a href="{{ route('grammar.placement') }}" class="btn" style="padding: 1.15rem 2.5rem; font-size: 1.1rem; border-radius: 3rem; background: var(--bg-card); color: var(--primary); border: 2px solid var(--border-color); font-weight: 700;">Evaluate your Language Now</a>
+                    <a href="{{ route('grammar.placement', ['language' => 'en']) }}" class="btn" style="padding: 1.15rem 2.5rem; font-size: 1.1rem; border-radius: 3rem; background: var(--bg-card); color: var(--primary); border: 2px solid var(--border-color); font-weight: 700;">Evaluate your Language Now</a>
                 @else
                     <a href="{{ route('grammar.index') }}" class="btn" style="padding: 1.15rem 2.5rem; font-size: 1.1rem; border-radius: 3rem; background: var(--primary); color: white; font-weight: 700; box-shadow: 0 10px 15px -3px rgba(0, 145, 80, 0.3);">{{ __('messages.continue_learning') }}</a>
-                    <a href="{{ route('grammar.placement') }}" class="btn" style="padding: 1.15rem 2.5rem; font-size: 1.1rem; border-radius: 3rem; background: var(--bg-card); color: var(--primary); border: 2px solid var(--border-color); font-weight: 700;">Re-evaluate your Language Now</a>
+                    <a href="{{ route('grammar.placement', ['language' => 'en']) }}" class="btn" style="padding: 1.15rem 2.5rem; font-size: 1.1rem; border-radius: 3rem; background: var(--bg-card); color: var(--primary); border: 2px solid var(--border-color); font-weight: 700;">Re-evaluate your Language Now</a>
                 @endguest
             </div>
         </div>

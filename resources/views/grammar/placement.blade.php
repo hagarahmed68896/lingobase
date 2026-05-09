@@ -849,7 +849,7 @@
         
         <!-- Onboarding / Intro -->
         <div id="scene-intro" class="onboard-lux">
-            <h2 style="font-size: 2.5rem; font-weight: 800; color: var(--text-main); margin-bottom: 1.5rem; line-height: 1.2;">Determine Your <span style="color: #009150;">English Level</span></h2>
+            <h2 style="font-size: 2.5rem; font-weight: 800; color: var(--text-main); margin-bottom: 1.5rem; line-height: 1.2;">Determine Your <span style="color: #009150;">{{ $language->name }} Level</span></h2>
             <p style="color: #64748b; font-size: 1.2rem; line-height: 1.7; margin-bottom: 2.5rem;">{{ __('messages.placement_intro') }}</p>
             <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 3rem; text-align: left; background: #f8fafc; padding: 2rem; border-radius: 1.5rem;">
                 <div style="display: flex; gap: 1rem; align-items: flex-start;">
@@ -945,6 +945,23 @@
             </a>
         </div>
 
+        <!-- Email Capture View -->
+        <div id="scene-auth-check" class="res-card hidden">
+            <div style="font-size: 5rem; margin-bottom: 2rem;">🔒</div>
+            <h2 style="font-size: 2.5rem; font-weight: 900; margin-bottom: 1rem;">Almost there!</h2>
+            <p style="color: var(--text-muted); font-size: 1.15rem; margin-bottom: 2rem;">Enter your email to save and view your detailed {{ $language->name }} evaluation results.</p>
+            
+            <form onsubmit="handleEmailCheck(event)" style="display: flex; flex-direction: column; gap: 1rem; align-items: center;">
+                <input type="email" id="auth-email-input" required placeholder="name@example.com" style="width: 100%; max-width: 400px; padding: 1.25rem; border-radius: 1rem; border: 2px solid var(--border-color); font-size: 1.1rem; text-align: center; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='var(--border-color)'">
+                
+                <button type="submit" class="btn-lux btn-lux-primary" style="padding: 1.25rem 4rem; width: 100%; max-width: 400px; justify-content: center; margin-top: 1rem;">
+                    View My Results
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </button>
+            </form>
+            <div id="email-check-loading" class="hidden" style="margin-top: 1rem; color: var(--primary); font-weight: 600;">Processing...</div>
+        </div>
+
         <!-- Loading View -->
         <div id="scene-loading" class="hidden" style="text-align: center; padding: 5rem;">
             <div class="spinner-lux"></div>
@@ -986,7 +1003,7 @@
         showView('scene-loading');
 
         try {
-            const res = await fetch('/grammar/placement-test/start', {
+            const res = await fetch('/{{ $language->slug }}/placement-test/start', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
                 body: JSON.stringify({})
@@ -1104,7 +1121,7 @@
 
         busy = true;
         try {
-            const res = await fetch(`/grammar/placement-test/${testId}/answer`, {
+            const res = await fetch(`/{{ $language->slug }}/placement-test/${testId}/answer`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
                 body: JSON.stringify({ question_id: activeQ.id, option_id: optId })
@@ -1133,7 +1150,7 @@
         document.getElementById('loading-msg').innerText = `Navigating to question ${idx + 1}...`;
 
         try {
-            const res = await fetch(`/grammar/placement-test/${testId}/navigate`, {
+            const res = await fetch(`/{{ $language->slug }}/placement-test/${testId}/navigate`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
                 body: JSON.stringify({ question_index: idx })
@@ -1171,7 +1188,7 @@
         document.getElementById('loading-msg').innerText = "Analyzing your performance...";
 
         try {
-            const res = await fetch(`/grammar/placement-test/${testId}/complete`, {
+            const res = await fetch(`/{{ $language->slug }}/placement-test/${testId}/complete`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' }
             });
@@ -1189,19 +1206,7 @@
         document.getElementById('side-nav').classList.add('hidden');
         
         if (!isLoggedIn) {
-            document.getElementById('scene-final').innerHTML = `
-                <div style="font-size: 5rem; margin-bottom: 2rem;">🔒</div>
-                <h2 style="font-size: 2.5rem; font-weight: 900; margin-bottom: 1rem;">Test Completed!</h2>
-                <p style="color: var(--text-muted); font-size: 1.15rem; margin-bottom: 3.5rem;">Create a free account to review your detailed results and personalized recommendations.</p>
-                <a href="{{ route('register') }}" class="btn-lux btn-lux-primary" style="text-decoration: none; padding: 1.25rem 4rem;">
-                    Create Account to View Results
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                </a>
-                <div style="margin-top: 1rem;">
-                    <a href="{{ route('login') }}" style="color: var(--primary); font-weight: 600; text-decoration: none;">Already have an account? Log in</a>
-                </div>
-            `;
-            showView('scene-final');
+            showView('scene-auth-check');
             return;
         }
 
@@ -1250,10 +1255,42 @@
     }
 
     function showView(id) {
-        ['scene-intro', 'scene-test', 'scene-final', 'scene-loading'].forEach(v => {
-            document.getElementById(v).classList.add('hidden');
+        ['scene-intro', 'scene-test', 'scene-final', 'scene-loading', 'scene-auth-check'].forEach(v => {
+            const el = document.getElementById(v);
+            if (el) el.classList.add('hidden');
         });
         document.getElementById(id).classList.remove('hidden');
+    }
+
+    async function handleEmailCheck(e) {
+        e.preventDefault();
+        const emailInput = document.getElementById('auth-email-input').value.trim();
+        if (!emailInput) return;
+
+        const loadingText = document.getElementById('email-check-loading');
+        loadingText.classList.remove('hidden');
+
+        try {
+            const res = await fetch('/api/check-email', {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ email: emailInput })
+            });
+            const data = await res.json();
+            
+            const encodedEmail = encodeURIComponent(emailInput);
+            if (data.exists) {
+                window.location.href = `/login?email=${encodedEmail}`;
+            } else {
+                window.location.href = `/register?email=${encodedEmail}`;
+            }
+        } catch (err) {
+            console.error(err);
+            loadingText.innerText = "Error verifying email. Please try again.";
+        }
     }
 </script>
 @endsection

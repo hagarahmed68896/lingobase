@@ -22,23 +22,29 @@ class ProfileController extends Controller
             ->with(['favoritable.storyLevel.language'])
             ->get();
 
-        // Fetch latest placement test result
-        $latestPlacementTest = \App\Models\PlacementTest::where('user_id', $user->id)
+        // Fetch latest placement test results per language
+        $placementTests = \App\Models\PlacementTest::with('language')
+            ->where('user_id', $user->id)
             ->where('status', 'completed')
-            ->latest()
-            ->first();
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->unique('language_id');
 
-        // Fetch recommendations if test exists
-        $recommendations = [];
-        if ($latestPlacementTest) {
-            $level = $latestPlacementTest->detected_level;
-            $levelModel = \App\Models\GrammarLevel::where('slug', 'LIKE', "%" . strtolower($level) . "%")->first();
-            if ($levelModel) {
-                $recommendations = $levelModel->lessons()->limit(3)->get();
+        // Fetch recommendations for each test
+        foreach ($placementTests as $test) {
+            $levelModel = \App\Models\GrammarLevel::where('language_id', $test->language_id)
+                ->where('slug', 'LIKE', "%" . strtolower($test->detected_level) . "%")
+                ->first();
+            
+            if (!$levelModel && $test->detected_level == 'A0') {
+                $levelModel = \App\Models\GrammarLevel::where('language_id', $test->language_id)
+                    ->where('slug', 'LIKE', "%a1%")->first();
             }
+            
+            $test->recommendations = $levelModel ? $levelModel->lessons()->limit(3)->get() : collect();
         }
 
-        return view('profile.index', compact('user', 'favLessons', 'favStories', 'latestPlacementTest', 'recommendations'));
+        return view('profile.index', compact('user', 'favLessons', 'favStories', 'placementTests'));
     }
 
     public function update(Request $request)

@@ -17,4 +17,14 @@ class Language extends Model
     {
         return $this->hasMany(StoryLevel::class);
     }
+
+    public function placementQuestions()
+    {
+        return $this->hasMany(PlacementQuestion::class);
+    }
+
+    public function placementTests()
+    {
+        return $this->hasMany(PlacementTest::class);
+    }
 }

@@ -29,4 +29,9 @@ class PlacementTest extends Model
     {
         return $this->hasMany(PlacementAnswer::class, 'user_placement_test_id');
     }
+
+    public function language()
+    {
+        return $this->belongsTo(Language::class);
+    }
 }

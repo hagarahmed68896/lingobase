@@ -127,6 +127,15 @@
                 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
                     <div class="form-group">
+                        <label>Language</label>
+                        <select name="language_id" class="form-control" required>
+                            <option value="">Select Language</option>
+                            @foreach($languages as $language)
+                                <option value="{{ $language->id }}" {{ old('language_id') == $language->id ? 'selected' : '' }}>{{ $language->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label>CEFR Level</label>
                         <select name="level" class="form-control" required>
                             <option value="">Select Level</option>
