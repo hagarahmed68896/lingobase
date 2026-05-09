@@ -1,2 +1,6 @@
 [variables]
 NIXPACKS_PHP_VERSION = "8.4"
+RAILPACK_PHP_VERSION = "8.4"
+
+[phases.build]
+cmds = ["composer install --optimize-autoloader --no-dev --no-interaction --ignore-platform-reqs"]
