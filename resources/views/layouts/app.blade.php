@@ -306,8 +306,26 @@
         </button>
 
         <nav class="nav-links" id="nav-links">
-            <a href="{{ route('grammar.index', ['language' => 'english']) }}">{{ __('messages.grammar_bank') }}</a>
-            <a href="{{ route('stories.index', ['language' => 'english']) }}">{{ __('messages.stories') }}</a>
+            <div class="dropdown">
+                <button class="btn dropdown-toggle" style="display: flex; align-items: center; gap: 0.5rem; border: none; background: transparent; padding: 0.5rem 1rem; font-weight: 500; font-size: 0.95rem; color: var(--nav-link); cursor: pointer;">
+                    {{ __('messages.grammar_bank') }}
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                </button>
+                <div class="dropdown-content">
+                    <a href="{{ route('grammar.index') }}" style="display: flex; align-items: center; gap: 0.5rem;">🇬🇧 English Grammar</a>
+                    <a href="{{ route('grammar.index') }}" style="display: flex; align-items: center; gap: 0.5rem;">🇪🇸 Spanish Grammar</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <button class="btn dropdown-toggle" style="display: flex; align-items: center; gap: 0.5rem; border: none; background: transparent; padding: 0.5rem 1rem; font-weight: 500; font-size: 0.95rem; color: var(--nav-link); cursor: pointer;">
+                    {{ __('messages.stories') }}
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                </button>
+                <div class="dropdown-content">
+                    <a href="{{ route('stories.index') }}" style="display: flex; align-items: center; gap: 0.5rem;">🇬🇧 English Stories</a>
+                    <a href="{{ route('stories.index') }}" style="display: flex; align-items: center; gap: 0.5rem;">🇪🇸 Spanish Stories</a>
+                </div>
+            </div>
             
 
             <!-- Language Switcher -->
