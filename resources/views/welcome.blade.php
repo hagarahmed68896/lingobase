@@ -99,6 +99,68 @@
     </div>
 </div>
 
+{{-- Free Resources by Language --}}
+<div style="margin-top: 4rem; padding-top: 3rem; border-top: 1px solid var(--border-color);">
+    <div style="text-align: center; margin-bottom: 2.5rem;">
+        <h2 style="font-size: 2rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.75rem;">Free Resources</h2>
+        <p style="color: var(--text-muted); font-size: 1.05rem;">Choose a language and start learning today — completely free.</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+
+        {{-- English Card --}}
+        <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 1.5rem; padding: 2rem; display: flex; flex-direction: column; gap: 1.25rem; transition: box-shadow 0.2s;" onmouseover="this.style.boxShadow='0 8px 30px rgba(0,145,80,0.12)'" onmouseout="this.style.boxShadow='none'">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <span style="font-size: 2.5rem;">🇬🇧</span>
+                <div>
+                    <div style="font-size: 1.4rem; font-weight: 800; color: var(--text-main);">English</div>
+                    <div style="font-size: 0.85rem; color: var(--text-muted);">Grammar · Stories · Placement Test</div>
+                </div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                <a href="{{ route('grammar.index') }}" style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-main); text-decoration: none; padding: 0.6rem 0.9rem; border-radius: 0.75rem; background: var(--bg-body); border: 1px solid var(--border-color); font-weight: 600; font-size: 0.9rem; transition: border-color 0.2s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border-color)'">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                    Grammar Bank
+                </a>
+                <a href="{{ route('stories.index') }}" style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-main); text-decoration: none; padding: 0.6rem 0.9rem; border-radius: 0.75rem; background: var(--bg-body); border: 1px solid var(--border-color); font-weight: 600; font-size: 0.9rem; transition: border-color 0.2s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border-color)'">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2-2z"/></svg>
+                    Reading Stories
+                </a>
+                <a href="{{ route('grammar.placement', ['language' => 'english']) }}" style="display: flex; align-items: center; gap: 0.5rem; color: white; text-decoration: none; padding: 0.6rem 0.9rem; border-radius: 0.75rem; background: var(--primary); font-weight: 700; font-size: 0.9rem;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                    Placement Test
+                </a>
+            </div>
+        </div>
+
+        {{-- Spanish Card --}}
+        <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 1.5rem; padding: 2rem; display: flex; flex-direction: column; gap: 1.25rem; transition: box-shadow 0.2s;" onmouseover="this.style.boxShadow='0 8px 30px rgba(220,38,38,0.1)'" onmouseout="this.style.boxShadow='none'">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <span style="font-size: 2.5rem;">🇪🇸</span>
+                <div>
+                    <div style="font-size: 1.4rem; font-weight: 800; color: var(--text-main);">Spanish</div>
+                    <div style="font-size: 0.85rem; color: var(--text-muted);">Gramática · Historias · Examen de Nivel</div>
+                </div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                <a href="{{ route('grammar.index') }}" style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-main); text-decoration: none; padding: 0.6rem 0.9rem; border-radius: 0.75rem; background: var(--bg-body); border: 1px solid var(--border-color); font-weight: 600; font-size: 0.9rem; transition: border-color 0.2s;" onmouseover="this.style.borderColor='#dc2626'" onmouseout="this.style.borderColor='var(--border-color)'">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                    Banco de Gramática
+                </a>
+                <a href="{{ route('stories.index') }}" style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-main); text-decoration: none; padding: 0.6rem 0.9rem; border-radius: 0.75rem; background: var(--bg-body); border: 1px solid var(--border-color); font-weight: 600; font-size: 0.9rem; transition: border-color 0.2s;" onmouseover="this.style.borderColor='#dc2626'" onmouseout="this.style.borderColor='var(--border-color)'">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2-2z"/></svg>
+                    Historias de Lectura
+                </a>
+                <a href="{{ route('grammar.placement', ['language' => 'spanish']) }}" style="display: flex; align-items: center; gap: 0.5rem; color: white; text-decoration: none; padding: 0.6rem 0.9rem; border-radius: 0.75rem; background: #dc2626; font-weight: 700; font-size: 0.9rem;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                    Examen de Nivel
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
 @endsection
 @push('scripts')
 <script>
