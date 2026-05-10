@@ -414,6 +414,20 @@
             </div>
         </div>
         <div class="page-content">
+            @if(session('success'))
+                <div style="background: #ecfdf5; border: 1px solid #10b981; color: #065f46; padding: 1rem 1.5rem; border-radius: 0.75rem; margin-bottom: 2rem; display: flex; align-items: center; gap: 0.75rem;">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+                    <span style="font-weight: 600;">{{ session('success') }}</span>
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div style="background: #fee2e2; border: 1px solid #ef4444; color: #991b1b; padding: 1rem 1.5rem; border-radius: 0.75rem; margin-bottom: 2rem; display: flex; align-items: center; gap: 0.75rem;">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                    <span style="font-weight: 600;">{{ session('error') }}</span>
+                </div>
+            @endif
+
             @yield('content')
         </div>
     </div>

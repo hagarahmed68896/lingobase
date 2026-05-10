@@ -15,6 +15,16 @@
         </a>
     </div>
 
+    @if ($errors->any())
+        <div style="background: #fee2e2; border: 1px solid #ef4444; color: #991b1b; padding: 1rem 1.5rem; border-radius: 0.75rem; margin-bottom: 2rem;">
+            <ul style="margin: 0; padding-left: 1.5rem;">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <form action="{{ route('admin.grammar.update', $lesson) }}" method="POST">
         @csrf
         @method('PUT')
@@ -30,12 +40,12 @@
 
                     <div style="margin-bottom: 1.5rem;">
                         <label style="display: block; font-size: 0.85rem; font-weight: 700; color: #4b5563; margin-bottom: 0.5rem;">Lesson Title</label>
-                        <input type="text" name="title" class="search-input" style="width: 100%;" required value="{{ $lesson->title }}">
+                        <input type="text" name="title" class="search-input" style="width: 100%;" required value="{{ old('title', $lesson->title) }}">
                     </div>
 
                     <div style="margin-bottom: 1.5rem;">
                         <label style="display: block; font-size: 0.85rem; font-weight: 700; color: #4b5563; margin-bottom: 0.5rem;">Explanation (Direct Instruction)</label>
-                        <textarea name="explanation" class="search-input" style="width: 100%; height: 350px; line-height: 1.6; resize: vertical;" required>{{ $lesson->explanation }}</textarea>
+                        <textarea name="explanation" class="search-input" style="width: 100%; height: 350px; line-height: 1.6; resize: vertical;" required>{{ old('explanation', $lesson->explanation) }}</textarea>
                     </div>
                 </div>
 
@@ -47,7 +57,7 @@
                     </h3>
                     <p style="color: #b45309; font-size: 0.85rem; margin: -1rem 0 1.5rem 0;">Helping learners understand context through their native language.</p>
                     
-                    <textarea name="arabic_explanation" class="search-input" style="width: 100%; height: 200px; direction: rtl; line-height: 1.8; border-color: #fde68a;">{{ $lesson->arabic_explanation }}</textarea>
+                    <textarea name="arabic_explanation" class="search-input" style="width: 100%; height: 200px; direction: rtl; line-height: 1.8; border-color: #fde68a;">{{ old('arabic_explanation', $lesson->arabic_explanation) }}</textarea>
                 </div>
             </div>
 
@@ -63,7 +73,7 @@
                         <label style="display: block; font-size: 0.85rem; font-weight: 700; color: #4b5563; margin-bottom: 0.5rem;">Language & Level</label>
                         <select name="grammar_level_id" class="search-input" style="width: 100%;" required>
                             @foreach($levels as $level)
-                                <option value="{{ $level->id }}" {{ $lesson->grammar_level_id == $level->id ? 'selected' : '' }}>
+                                <option value="{{ $level->id }}" {{ old('grammar_level_id', $lesson->grammar_level_id) == $level->id ? 'selected' : '' }}>
                                     {{ $level->language->name }} - {{ $level->name }}
                                 </option>
                             @endforeach
@@ -72,12 +82,12 @@
 
                     <div style="margin-bottom: 1.5rem;">
                         <label style="display: block; font-size: 0.85rem; font-weight: 700; color: #4b5563; margin-bottom: 0.5rem;">URL Slug</label>
-                        <input type="text" name="slug" class="search-input" style="width: 100%; font-family: monospace; font-size: 0.9rem;" required value="{{ $lesson->slug }}">
+                        <input type="text" name="slug" class="search-input" style="width: 100%; font-family: monospace; font-size: 0.9rem;" required value="{{ old('slug', $lesson->slug) }}">
                     </div>
 
                     <div style="margin-bottom: 2rem;">
                         <label style="display: block; font-size: 0.85rem; font-weight: 700; color: #4b5563; margin-bottom: 0.5rem;">Display Order</label>
-                        <input type="number" name="order" class="search-input" style="width: 100%;" value="{{ $lesson->order }}" required>
+                        <input type="number" name="order" class="search-input" style="width: 100%;" value="{{ old('order', $lesson->order) }}" required>
                     </div>
 
                     <hr style="border: 0; border-top: 1px solid #f3f4f6; margin: 0 0 1.5rem 0;">

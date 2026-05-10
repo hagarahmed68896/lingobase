@@ -15,6 +15,16 @@
         </a>
     </div>
 
+    @if ($errors->any())
+        <div style="background: #fee2e2; border: 1px solid #ef4444; color: #991b1b; padding: 1rem 1.5rem; border-radius: 0.75rem; margin-bottom: 2rem;">
+            <ul style="margin: 0; padding-left: 1.5rem;">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <form action="{{ route('admin.grammar.store') }}" method="POST">
         @csrf
         
@@ -29,12 +39,12 @@
 
                     <div style="margin-bottom: 1.5rem;">
                         <label style="display: block; font-size: 0.85rem; font-weight: 700; color: #4b5563; margin-bottom: 0.5rem;">Lesson Title</label>
-                        <input type="text" name="title" class="search-input" style="width: 100%;" required placeholder="e.g. Present Continuous Tense">
+                        <input type="text" name="title" class="search-input" style="width: 100%;" required placeholder="e.g. Present Continuous Tense" value="{{ old('title') }}">
                     </div>
 
                     <div style="margin-bottom: 1.5rem;">
                         <label style="display: block; font-size: 0.85rem; font-weight: 700; color: #4b5563; margin-bottom: 0.5rem;">Explanation (Direct Instruction)</label>
-                        <textarea name="explanation" class="search-input" style="width: 100%; height: 300px; line-height: 1.6; resize: vertical;" required placeholder="Write the core lesson content here..."></textarea>
+                        <textarea name="explanation" class="search-input" style="width: 100%; height: 300px; line-height: 1.6; resize: vertical;" required placeholder="Write the core lesson content here...">{{ old('explanation') }}</textarea>
                     </div>
                 </div>
 
@@ -46,7 +56,7 @@
                     </h3>
                     <p style="color: #b45309; font-size: 0.85rem; margin: -1rem 0 1.5rem 0;">Explain complex concepts in Arabic to assist learners who switch the site language.</p>
                     
-                    <textarea name="arabic_explanation" class="search-input" style="width: 100%; height: 200px; direction: rtl; line-height: 1.8; border-color: #fde68a;" placeholder="اكتب توضيحاً إضافياً باللغة العربية..."></textarea>
+                    <textarea name="arabic_explanation" class="search-input" style="width: 100%; height: 200px; direction: rtl; line-height: 1.8; border-color: #fde68a;" placeholder="اكتب توضيحاً إضافياً باللغة العربية...">{{ old('arabic_explanation') }}</textarea>
                 </div>
             </div>
 
@@ -62,20 +72,20 @@
                         <label style="display: block; font-size: 0.85rem; font-weight: 700; color: #4b5563; margin-bottom: 0.5rem;">Language & Level</label>
                         <select name="grammar_level_id" class="search-input" style="width: 100%;" required>
                             @foreach($levels as $level)
-                                <option value="{{ $level->id }}">{{ $level->language->name }} - {{ $level->name }}</option>
+                                <option value="{{ $level->id }}" {{ old('grammar_level_id') == $level->id ? 'selected' : '' }}>{{ $level->language->name }} - {{ $level->name }}</option>
                             @endforeach
                         </select>
                     </div>
 
                     <div style="margin-bottom: 1.5rem;">
                         <label style="display: block; font-size: 0.85rem; font-weight: 700; color: #4b5563; margin-bottom: 0.5rem;">URL Slug</label>
-                        <input type="text" name="slug" class="search-input" style="width: 100%; font-family: monospace; font-size: 0.9rem;" required placeholder="present-continuous">
+                        <input type="text" name="slug" class="search-input" style="width: 100%; font-family: monospace; font-size: 0.9rem;" required placeholder="present-continuous" value="{{ old('slug') }}">
                         <small style="color: #9ca3af; display: block; margin-top: 0.4rem;">Used for the lesson's web address.</small>
                     </div>
 
                     <div style="margin-bottom: 2rem;">
                         <label style="display: block; font-size: 0.85rem; font-weight: 700; color: #4b5563; margin-bottom: 0.5rem;">Display Order</label>
-                        <input type="number" name="order" class="search-input" style="width: 100%;" value="1" required>
+                        <input type="number" name="order" class="search-input" style="width: 100%;" value="{{ old('order', 1) }}" required>
                     </div>
 
                     <hr style="border: 0; border-top: 1px solid #f3f4f6; margin: 0 0 1.5rem 0;">
