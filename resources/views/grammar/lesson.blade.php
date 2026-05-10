@@ -199,7 +199,7 @@
             {!! nl2br(e($lesson->explanation)) !!}
         </div>
 
-        @if(app()->getLocale() == 'ar' && $lesson->arabic_explanation)
+        @if($lesson->arabic_explanation)
             <div class="arabic-illustration" style="margin-top: 3rem; padding-top: 2rem; border-top: 1px dashed #e5e7eb; direction: rtl; text-align: right;">
                 <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--primary); margin-bottom: 1rem;">توضيح بالعربية</h3>
                 <div style="font-size: 1.1rem; line-height: 1.8; color: #4b5563;">

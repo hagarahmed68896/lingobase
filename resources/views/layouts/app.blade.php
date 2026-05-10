@@ -326,19 +326,7 @@
                 </div>
             </div>
 
-
-            <!-- Language Switcher -->
-            <div class="dropdown">
-                <button class="btn dropdown-toggle" style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; border: none; background: transparent; padding: 0.5rem 1rem; border-radius: 2rem; width: auto; height: 40px; transition: background 0.2s;">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
-                    <span style="font-weight: 500; font-size: 0.95rem;">{{ $currentLabel }}</span>
-                </button>
-                <div class="dropdown-content">
-                    <a href="{{ route('lang.switch', 'en') }}">English</a>
-                    <a href="{{ route('lang.switch', 'ar') }}">العربية</a>
-                    <a href="{{ route('lang.switch', 'es') }}">Español</a>
-                </div>
-            </div>
+            <!-- Language Switcher Removed per user request -->
 
             @auth
                 <!-- Notifications -->

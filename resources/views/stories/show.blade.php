@@ -164,7 +164,7 @@
         {!! $story->content !!}
     </div>
 
-    @if(app()->getLocale() == 'ar' && $story->arabic_comment)
+    @if($story->arabic_comment)
         <div class="arabic-illustration" style="margin-top: 4rem; padding: 2rem; background: var(--bg-body); border-radius: 1rem; direction: rtl; text-align: right; border: 1px solid var(--border-color);">
             <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--primary); margin-bottom: 1rem;">تعليق توضيحي</h3>
             <div style="font-size: 1.1rem; line-height: 1.8; color: var(--text-muted);">
