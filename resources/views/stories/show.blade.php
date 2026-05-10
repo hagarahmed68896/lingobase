@@ -168,7 +168,11 @@
         <div class="arabic-illustration" style="margin-top: 4rem; padding: 2rem; background: var(--bg-body); border-radius: 1rem; border: 1px solid var(--border-color);">
             <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--primary); margin-bottom: 1rem; text-align: right;" dir="rtl">تعليق توضيحي</h3>
             <div class="markdown-content" dir="rtl">
-                {!! Illuminate\Support\Str::markdown($story->arabic_comment) !!}
+                {!! Illuminate\Support\Str::markdown($story->arabic_comment, [
+                    'renderer' => [
+                        'soft_break' => "<br />\n",
+                    ],
+                ]) !!}
             </div>
         </div>
     @endif
