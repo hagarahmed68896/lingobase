@@ -292,6 +292,7 @@
             font-size: 1.1rem;
             line-height: 1.8;
             color: var(--text-main);
+            unicode-bidi: plaintext;
         }
         .markdown-content h1, .markdown-content h2, .markdown-content h3, .markdown-content h4 {
             color: #111827;
