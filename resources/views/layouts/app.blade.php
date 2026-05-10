@@ -308,25 +308,20 @@
         <nav class="nav-links" id="nav-links">
             <div class="dropdown">
                 <button class="btn dropdown-toggle" style="display: flex; align-items: center; gap: 0.5rem; border: none; background: transparent; padding: 0.5rem 1rem; font-weight: 500; font-size: 0.95rem; color: var(--nav-link); cursor: pointer;">
-                    {{ __('messages.grammar_bank') }}
+                    Free Resources
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
                 </button>
-                <div class="dropdown-content">
+                <div class="dropdown-content" style="min-width: 220px;">
+                    <div style="padding: 0.5rem 1rem; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted);">Grammar Bank</div>
                     <a href="{{ route('grammar.index') }}" style="display: flex; align-items: center; gap: 0.5rem;">🇬🇧 English Grammar</a>
                     <a href="{{ route('grammar.index') }}" style="display: flex; align-items: center; gap: 0.5rem;">🇪🇸 Spanish Grammar</a>
-                </div>
-            </div>
-            <div class="dropdown">
-                <button class="btn dropdown-toggle" style="display: flex; align-items: center; gap: 0.5rem; border: none; background: transparent; padding: 0.5rem 1rem; font-weight: 500; font-size: 0.95rem; color: var(--nav-link); cursor: pointer;">
-                    {{ __('messages.stories') }}
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-                </button>
-                <div class="dropdown-content">
+                    <div style="border-top: 1px solid var(--border-color); margin: 0.25rem 0;"></div>
+                    <div style="padding: 0.5rem 1rem; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted);">Stories</div>
                     <a href="{{ route('stories.index') }}" style="display: flex; align-items: center; gap: 0.5rem;">🇬🇧 English Stories</a>
                     <a href="{{ route('stories.index') }}" style="display: flex; align-items: center; gap: 0.5rem;">🇪🇸 Spanish Stories</a>
                 </div>
             </div>
-            
+
 
             <!-- Language Switcher -->
             <div class="dropdown">
