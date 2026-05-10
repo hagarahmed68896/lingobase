@@ -39,12 +39,12 @@
 
                     <div style="margin-bottom: 1.5rem;">
                         <label style="display: block; font-size: 0.85rem; font-weight: 700; color: #4b5563; margin-bottom: 0.5rem;">Lesson Title</label>
-                        <input type="text" name="title" class="search-input" style="width: 100%;" required placeholder="e.g. Present Continuous Tense" value="{{ old('title') }}">
+                        <input type="text" name="title" class="search-input" style="width: 100%; direction: rtl; text-align: right;" required placeholder="e.g. المضارع البسيط" value="{{ old('title') }}">
                     </div>
 
                     <div style="margin-bottom: 1.5rem;">
                         <label style="display: block; font-size: 0.85rem; font-weight: 700; color: #4b5563; margin-bottom: 0.5rem;">Explanation (Direct Instruction)</label>
-                        <textarea name="explanation" class="search-input" style="width: 100%; height: 300px; line-height: 1.6; resize: vertical;" required placeholder="Write the core lesson content here...">{{ old('explanation') }}</textarea>
+                        <textarea name="explanation" class="search-input" style="width: 100%; height: 300px; line-height: 1.6; resize: vertical; direction: rtl; text-align: right;" required placeholder="Write the core lesson content here...">{{ old('explanation') }}</textarea>
                     </div>
                 </div>
 
