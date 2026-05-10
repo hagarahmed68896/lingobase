@@ -24,7 +24,9 @@ class PlacementTestController extends Controller
         try {
             DB::beginTransaction();
 
-            $language = Language::where('slug', $languageSlug)->firstOrFail();
+            $language = Language::where('slug', $languageSlug)
+                ->orWhere('code', $languageSlug)
+                ->firstOrFail();
             $languageId = $language->id;
 
             $user = Auth::user();
