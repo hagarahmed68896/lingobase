@@ -195,15 +195,15 @@
 <div class="lesson-layout">
     <div class="content-card">
         <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid #f3f4f6;">Lesson Content</h2>
-        <div class="lesson-text">
-            {!! nl2br(e($lesson->explanation)) !!}
+        <div class="markdown-content" dir="auto">
+            {!! Illuminate\Support\Str::markdown($lesson->explanation) !!}
         </div>
 
         @if($lesson->arabic_explanation)
-            <div class="arabic-illustration" style="margin-top: 3rem; padding-top: 2rem; border-top: 1px dashed #e5e7eb; direction: rtl; text-align: right;">
-                <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--primary); margin-bottom: 1rem;">توضيح بالعربية</h3>
-                <div style="font-size: 1.1rem; line-height: 1.8; color: #4b5563;">
-                    {!! nl2br(e($lesson->arabic_explanation)) !!}
+            <div class="arabic-illustration" style="margin-top: 3rem; padding-top: 2rem; border-top: 1px dashed #e5e7eb;">
+                <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--primary); margin-bottom: 1rem; text-align: right;" dir="rtl">توضيح بالعربية</h3>
+                <div class="markdown-content" dir="rtl">
+                    {!! Illuminate\Support\Str::markdown($lesson->arabic_explanation) !!}
                 </div>
             </div>
         @endif

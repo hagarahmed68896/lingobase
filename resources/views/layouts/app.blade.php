@@ -287,6 +287,63 @@
             display: none !important;
         }
 
+        /* Global Markdown Styling */
+        .markdown-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-main);
+        }
+        .markdown-content h1, .markdown-content h2, .markdown-content h3, .markdown-content h4 {
+            color: #111827;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            font-weight: 800;
+        }
+        .markdown-content p {
+            margin-bottom: 1.25rem;
+        }
+        .markdown-content ul, .markdown-content ol {
+            margin-bottom: 1.25rem;
+            padding-inline-start: 2rem;
+        }
+        .markdown-content li {
+            margin-bottom: 0.5rem;
+        }
+        .markdown-content strong {
+            font-weight: 700;
+            color: #111827;
+        }
+        .markdown-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            font-size: 1rem;
+            background: white;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+        .markdown-content th, .markdown-content td {
+            padding: 1rem;
+            border: 1px solid #e5e7eb;
+            text-align: left;
+        }
+        .markdown-content th {
+            background-color: #f8fafc;
+            font-weight: 700;
+            color: #374151;
+        }
+        /* Arabic Specific Markdown Alignments */
+        .markdown-content[dir="rtl"], .markdown-content[dir="rtl"] p {
+            text-align: right;
+        }
+        .markdown-content[dir="rtl"] th, .markdown-content[dir="rtl"] td {
+            text-align: right;
+        }
+        .markdown-content[dir="rtl"] ul, .markdown-content[dir="rtl"] ol {
+            padding-inline-start: 0;
+            padding-inline-end: 2rem;
+        }
     </style>
     @yield('styles')
 </head>
