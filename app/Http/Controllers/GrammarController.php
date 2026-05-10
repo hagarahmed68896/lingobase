@@ -11,12 +11,18 @@ class GrammarController extends Controller
 {
     public function index(Request $request)
     {
-        // Load languages with levels, and levels with lessons filtered by search
-        $languages = Language::with(['grammarLevels.lessons' => function($query) use ($request) {
+        $query = Language::with(['grammarLevels.lessons' => function($q) use ($request) {
             if ($request->has('search') && $request->search != '') {
-                $query->where('title', 'like', '%' . $request->search . '%');
+                $q->where('title', 'like', '%' . $request->search . '%');
             }
-        }])->get();
+        }]);
+
+        // Filter by language slug if provided
+        if ($request->has('language') && $request->language != '') {
+            $query->where('slug', $request->language);
+        }
+
+        $languages = $query->get();
 
         // If searching, we might want to filter out languages/levels that have no matching lessons
         if ($request->has('search') && $request->search != '') {
@@ -31,7 +37,8 @@ class GrammarController extends Controller
             });
         }
 
-        return view('grammar.index', compact('languages'));
+        $currentLanguage = $request->language ?? null;
+        return view('grammar.index', compact('languages', 'currentLanguage'));
     }
 
     public function showLevel($languageSlug, $levelSlug)
