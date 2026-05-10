@@ -14,6 +14,11 @@ return new class extends Migration
         }
 
         if ($english) {
+            // Force the slug to be 'english' instead of 'en' to prevent 404 errors on user side
+            DB::table('languages')
+                ->where('id', $english->id)
+                ->update(['slug' => 'english']);
+
             // Backfill any placement questions that still have NULL language_id
             DB::table('placement_questions')
                 ->whereNull('language_id')
