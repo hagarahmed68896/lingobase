@@ -19,6 +19,10 @@
                 <p style="color: #6b7280; font-size: 1rem; margin: 0.5rem 0 0 0; max-width: 500px;">Curate and manage the adaptive placement test questions{{ request('language_id') ? ' for ' . ($languages->firstWhere('id', request('language_id'))->name ?? '') : '' }}.</p>
             </div>
             <div style="display: flex; gap: 1rem;">
+                <button onclick="document.getElementById('import-modal').classList.remove('hidden')" class="btn" style="background: #f8fafc; color: #64748b; border: 1px solid #e2e8f0; padding: 0.875rem 1.5rem; border-radius: 1rem; display: flex; align-items: center; gap: 0.75rem; font-weight: 700; transition: all 0.3s ease;">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                    Import CSV
+                </button>
                 <a href="{{ route('admin.placement-settings.index') }}" class="btn" style="background: #f8fafc; color: #64748b; border: 1px solid #e2e8f0; padding: 0.875rem 1.5rem; border-radius: 1rem; display: flex; align-items: center; gap: 0.75rem; font-weight: 700; transition: all 0.3s ease;">
                     <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                     Settings
@@ -229,4 +233,40 @@
         @endif
     </div>
 </div>
+
+<!-- Import Modal -->
+<div id="import-modal" class="hidden" style="position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; display: flex; align-items: center; justify-content: center;">
+    <div style="background: white; border-radius: 1rem; width: 100%; max-width: 500px; padding: 2rem; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <h3 style="margin: 0; font-size: 1.25rem; font-weight: 700;">Import Questions</h3>
+            <button onclick="document.getElementById('import-modal').classList.add('hidden')" style="background: none; border: none; cursor: pointer; color: #64748b;">
+                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+        <form action="{{ route('admin.placement-questions.import') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div style="margin-bottom: 1rem;">
+                <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">Language</label>
+                <select name="language_id" required style="width: 100%; padding: 0.75rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; outline: none;">
+                    @foreach($languages as $lang)
+                        <option value="{{ $lang->id }}" {{ request('language_id') == $lang->id ? 'selected' : '' }}>{{ $lang->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">CSV File</label>
+                <input type="file" name="csv_file" accept=".csv" required style="width: 100%; padding: 0.75rem; border: 1px dashed #cbd5e1; border-radius: 0.5rem; background: #f8fafc; cursor: pointer;">
+                <p style="font-size: 0.8rem; color: #64748b; margin-top: 0.5rem;">Ensure your CSV has these exact headers: Level, Type, UID, Question_Text, Option_A, Option_B, Option_C, Correct, Distractor_Logic.</p>
+            </div>
+            <div style="display: flex; justify-content: flex-end; gap: 1rem;">
+                <button type="button" onclick="document.getElementById('import-modal').classList.add('hidden')" class="btn" style="background: #f1f5f9; color: #475569;">Cancel</button>
+                <button type="submit" class="btn btn-primary" style="padding: 0.75rem 1.5rem; border-radius: 0.5rem;">Import Data</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    .hidden { display: none !important; }
+</style>
 @endsection

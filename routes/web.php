@@ -82,6 +82,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::resource('languages', App\Http\Controllers\Admin\LanguageController::class);
     Route::resource('grammar', App\Http\Controllers\Admin\GrammarController::class);
     Route::resource('stories', App\Http\Controllers\Admin\StoryController::class);
+    Route::post('placement-questions/import', [App\Http\Controllers\Admin\PlacementQuestionController::class, 'import'])->name('placement-questions.import');
     Route::resource('placement-questions', App\Http\Controllers\Admin\PlacementQuestionController::class);
     
     // Placement Test Settings

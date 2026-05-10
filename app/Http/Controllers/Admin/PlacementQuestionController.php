@@ -180,4 +180,80 @@ class PlacementQuestionController extends Controller
         $placementQuestion->delete();
         return redirect()->back()->with('success', 'Question deleted successfully.');
     }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'language_id' => 'required|exists:languages,id',
+            'csv_file' => 'required|file|mimes:csv,txt'
+        ]);
+
+        $file = $request->file('csv_file');
+        $path = $file->getRealPath();
+        
+        $handle = fopen($path, 'r');
+        $header = fgetcsv($handle);
+        if (!$header) {
+            return redirect()->back()->with('error', 'Invalid CSV file format.');
+        }
+
+        // Clean BOM if exists from first column
+        $header[0] = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $header[0]);
+        $header = array_map('trim', $header);
+        
+        $count = 0;
+        
+        \Illuminate\Support\Facades\DB::beginTransaction();
+        try {
+            while (($row = fgetcsv($handle)) !== false) {
+                if (count($header) !== count($row)) continue;
+                
+                $data = array_combine($header, $row);
+                
+                $questionText = trim($data['Question_Text'] ?? '');
+                if (!$questionText) continue;
+
+                $section = strtolower(trim($data['Type'] ?? 'grammar'));
+                if (!in_array($section, ['grammar', 'vocabulary', 'reading', 'listening'])) {
+                    $section = 'grammar';
+                }
+
+                $question = PlacementQuestion::create([
+                    'language_id' => $request->language_id,
+                    'level' => trim($data['Level'] ?? 'A1'),
+                    'section' => $section,
+                    'question_text' => $questionText,
+                    'distractor_logic' => trim($data['Distractor_Logic'] ?? ''),
+                    'points' => 1,
+                    'skill' => trim($data['UID'] ?? ''),
+                ]);
+
+                $options = [
+                    'A' => $data['Option_A'] ?? null,
+                    'B' => $data['Option_B'] ?? null,
+                    'C' => $data['Option_C'] ?? null,
+                ];
+                
+                $correctLetter = strtoupper(trim($data['Correct'] ?? ''));
+
+                foreach ($options as $letter => $text) {
+                    if (!empty(trim($text))) {
+                        PlacementOption::create([
+                            'placement_question_id' => $question->id,
+                            'option_text' => trim($text),
+                            'is_correct' => ($letter === $correctLetter)
+                        ]);
+                    }
+                }
+                $count++;
+            }
+            \Illuminate\Support\Facades\DB::commit();
+            return redirect()->back()->with('success', "Successfully imported {$count} questions!");
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\DB::rollBack();
+            return redirect()->back()->with('error', "Import failed: " . $e->getMessage());
+        } finally {
+            fclose($handle);
+        }
+    }
 }
