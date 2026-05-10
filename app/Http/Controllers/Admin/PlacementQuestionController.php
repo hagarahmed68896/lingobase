@@ -37,7 +37,11 @@ class PlacementQuestionController extends Controller
 
         $stats = [];
         foreach ($sections as $section) {
-            $stats[$section] = \App\Models\PlacementQuestion::where('section', $section)->count();
+            $statsQuery = \App\Models\PlacementQuestion::where('section', $section);
+            if ($request->filled('language_id')) {
+                $statsQuery->where('language_id', $request->language_id);
+            }
+            $stats[$section] = $statsQuery->count();
         }
         $languages = \App\Models\Language::all();
 

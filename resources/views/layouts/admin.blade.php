@@ -372,10 +372,18 @@
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10l4 4v10a2 2 0 01-2 2z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 11V9m-4 5V9m-4 5V9"></path></svg>
                 Stories
             </a>
-            <a href="{{ route('admin.placement-questions.index') }}" class="nav-item {{ request()->routeIs('admin.placement-questions.*') ? 'active' : '' }}">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
-                Placement Tests
-            </a>
+            <div style="margin-top: 0.25rem;">
+                <div class="nav-item" style="color: #6b7280; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; padding-bottom: 0.25rem; cursor: default;">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                    Placement Tests
+                </div>
+                @php $languages = \App\Models\Language::all(); @endphp
+                @foreach($languages as $lang)
+                <a href="{{ route('admin.placement-questions.index', ['language_id' => $lang->id]) }}" class="nav-item {{ request('language_id') == $lang->id && request()->routeIs('admin.placement-questions.*') ? 'active' : '' }}" style="padding-left: 3.5rem; font-size: 0.9rem;">
+                    {{ $lang->code === 'en' ? '🇬🇧' : ($lang->code === 'es' ? '🇪🇸' : '🌐') }} {{ $lang->name }} Test
+                </a>
+                @endforeach
+            </div>
         </nav>
         <div style="padding: 1.5rem; border-top: 1px solid rgba(255, 255, 255, 0.1);">
             <form action="{{ route('logout') }}" method="POST">
