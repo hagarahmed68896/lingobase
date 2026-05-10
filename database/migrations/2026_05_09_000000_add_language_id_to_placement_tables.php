@@ -25,7 +25,10 @@ return new class extends Migration
         });
         
         // 3. Map existing records to English if English exists
-        $english = \Illuminate\Support\Facades\DB::table('languages')->where('slug', 'en')->first();
+        $english = \Illuminate\Support\Facades\DB::table('languages')->where('code', 'en')->first();
+        if (!$english) {
+            $english = \Illuminate\Support\Facades\DB::table('languages')->where('slug', 'english')->first();
+        }
         if ($english) {
             \Illuminate\Support\Facades\DB::table('placement_questions')
                 ->whereNull('language_id')
