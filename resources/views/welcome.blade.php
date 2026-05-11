@@ -3,7 +3,7 @@
 @section('hero')
 <style>
     .bubble-bg {
-        background-color: var(--bg-body);
+        background-color: transparent;
         background-image: 
             radial-gradient(circle at 15% 50%, rgba(0, 145, 80, 0.05) 0%, transparent 25%),
             radial-gradient(circle at 85% 30%, rgba(0, 145, 80, 0.05) 0%, transparent 25%);
@@ -38,14 +38,21 @@
             </div>
         </div>
 
-        <div class="hero-visual" style="position: relative;">
-            <div style="position: absolute; inset: -20px; background: radial-gradient(circle, var(--accent) 0%, transparent 70%); border-radius: 50%; z-index: -1;"></div>
-            <img src="{{ asset('images/hero_illustration.png') }}" alt="Master English Illustration" style="width: 100%; border-radius: 2rem; filter: drop-shadow(0 20px 50px rgba(0,0,0,0.1)); animation: float 6s ease-in-out infinite;">
+        <div class="hero-visual" style="position: relative; text-align: center; display: flex; justify-content: center;">
+            <!-- Light Mode Image -->
+            <img src="{{ asset('Gemini_Generated_Image_4b69q14b69q14b69-Picsart-BackgroundRemover (1).png') }}" alt="LingoBase Illustration Light" class="hero-img-light" style="max-width: 500px; width: 100%; height: auto; border-radius: 2rem; animation: float 6s ease-in-out infinite;">
+            
+            <!-- Dark Mode Image -->
+            <img src="{{ asset('Gemini_Generated_Image_od4g5aod4g5aod4g-Picsart-BackgroundRemover.png') }}" alt="LingoBase Illustration Dark" class="hero-img-dark" style="max-width: 500px; width: 100%; height: auto; border-radius: 2rem; animation: float 6s ease-in-out infinite; display: none;">
         </div>
     </div>
 </div>
 
 <style>
+    /* Theme toggling for hero images */
+    body.dark-mode .hero-img-light { display: none !important; }
+    body.dark-mode .hero-img-dark { display: block !important; }
+
     @keyframes float {
         0%, 100% { transform: translateY(0); }
         50% { transform: translateY(-15px); }
@@ -155,6 +162,78 @@
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
                     Examen de Nivel
                 </a>
+            </div>
+        </div>
+
+    </div>
+</div>
+{{-- Reviews / Testimonials Section --}}
+<div style="margin-top: 5rem; padding-top: 4rem; border-top: 1px solid var(--border-color); padding-bottom: 2rem;">
+    <div style="text-align: center; margin-bottom: 3.5rem;">
+        <span style="color: var(--primary); font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.85rem;">Testimonials</span>
+        <h2 style="font-size: 2.25rem; font-weight: 800; color: var(--text-main); margin-top: 0.5rem; margin-bottom: 1rem;">What Our Learners Say</h2>
+        <p style="color: var(--text-muted); font-size: 1.1rem; max-width: 600px; margin: 0 auto;">Discover how LingoBase has helped thousands of students achieve fluency with our modern approach.</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+        
+        <!-- Review 1 -->
+        <div class="review-card" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 1.5rem; padding: 2rem; position: relative; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);" onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 20px 40px -10px rgba(0, 145, 80, 0.12)'; this.style.borderColor='var(--primary)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 4px 6px -1px rgba(0,0,0,0.05)'; this.style.borderColor='var(--border-color)';">
+            <div style="position: absolute; top: -15px; right: 2rem; background: var(--primary); width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white;">
+                <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+            </div>
+            <div style="display: flex; gap: 0.25rem; color: #fbbf24; margin-bottom: 1.25rem;">
+                @for($i=0; $i<5; $i++)
+                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                @endfor
+            </div>
+            <p style="color: var(--text-main); font-size: 1.05rem; line-height: 1.6; margin-bottom: 2rem; font-style: italic;">"The placement test was incredibly accurate. LingoBase helped me identify my weak points, and the grammar bank explanations are so clear!"</p>
+            <div style="display: flex; align-items: center; gap: 1rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
+                <img src="https://ui-avatars.com/api/?name=Sarah+M&background=009150&color=fff&rounded=true" alt="Sarah M." style="width: 48px; height: 48px; border-radius: 50%;">
+                <div>
+                    <div style="font-weight: 700; color: var(--text-main);">Sarah M.</div>
+                    <div style="font-size: 0.85rem; color: var(--text-muted);">Learning English</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Review 2 -->
+        <div class="review-card" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 1.5rem; padding: 2rem; position: relative; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);" onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 20px 40px -10px rgba(0, 145, 80, 0.12)'; this.style.borderColor='var(--primary)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 4px 6px -1px rgba(0,0,0,0.05)'; this.style.borderColor='var(--border-color)';">
+            <div style="position: absolute; top: -15px; right: 2rem; background: var(--primary); width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white;">
+                <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+            </div>
+            <div style="display: flex; gap: 0.25rem; color: #fbbf24; margin-bottom: 1.25rem;">
+                @for($i=0; $i<5; $i++)
+                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                @endfor
+            </div>
+            <p style="color: var(--text-main); font-size: 1.05rem; line-height: 1.6; margin-bottom: 2rem; font-style: italic;">"Learning Spanish has never been easier. The UI is smooth, the stories are engaging, and I actually enjoy studying now!"</p>
+            <div style="display: flex; align-items: center; gap: 1rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
+                <img src="https://ui-avatars.com/api/?name=Ahmed+K&background=009150&color=fff&rounded=true" alt="Ahmed K." style="width: 48px; height: 48px; border-radius: 50%;">
+                <div>
+                    <div style="font-weight: 700; color: var(--text-main);">Ahmed K.</div>
+                    <div style="font-size: 0.85rem; color: var(--text-muted);">Learning Spanish</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Review 3 -->
+        <div class="review-card" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 1.5rem; padding: 2rem; position: relative; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);" onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 20px 40px -10px rgba(0, 145, 80, 0.12)'; this.style.borderColor='var(--primary)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 4px 6px -1px rgba(0,0,0,0.05)'; this.style.borderColor='var(--border-color)';">
+            <div style="position: absolute; top: -15px; right: 2rem; background: var(--primary); width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white;">
+                <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+            </div>
+            <div style="display: flex; gap: 0.25rem; color: #fbbf24; margin-bottom: 1.25rem;">
+                @for($i=0; $i<5; $i++)
+                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                @endfor
+            </div>
+            <p style="color: var(--text-main); font-size: 1.05rem; line-height: 1.6; margin-bottom: 2rem; font-style: italic;">"The best free resource out there! The design is stunning and the user experience feels premium. Tracking my progress is so motivating."</p>
+            <div style="display: flex; align-items: center; gap: 1rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
+                <img src="https://ui-avatars.com/api/?name=Lina+A&background=009150&color=fff&rounded=true" alt="Lina A." style="width: 48px; height: 48px; border-radius: 50%;">
+                <div>
+                    <div style="font-weight: 700; color: var(--text-main);">Lina A.</div>
+                    <div style="font-size: 0.85rem; color: var(--text-muted);">Learning English</div>
+                </div>
             </div>
         </div>
 

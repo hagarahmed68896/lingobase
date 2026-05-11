@@ -6,36 +6,44 @@
     <title>LingoBase - Master a New Language</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
         :root {
             /* Light Theme (Default) */
             --primary: #009150;
             --primary-dark: #007a43;
             --accent: #dcfce7;
-            --bg-body: #f9fafb;
-            --bg-card: #ffffff;
-            --header-bg: #ffffff;
-            --text-main: #1e293b;
+            --bg-body: #f8fafc;
+            --bg-card: rgba(255, 255, 255, 0.85);
+            --header-bg: rgba(255, 255, 255, 0.8);
+            --text-main: #0f172a;
             --text-muted: #64748b;
-            --border-color: #e5e7eb;
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
-            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            --border-color: rgba(229, 231, 235, 0.6);
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
             --radius: 0.75rem;
             --nav-link: #1e293b;
             --nav-link-hover: #009150;
+            --glow-1: rgba(52, 211, 153, 0.25);
+            --glow-2: rgba(56, 189, 248, 0.2);
         }
 
         body.dark-mode {
-            /* Dark Theme */
-            --bg-body: #0f172a;
-            --bg-card: #1e293b;
-            --header-bg: #1e293b;
-            --text-main: #f1f5f9;
-            --text-muted: #94a3b8;
-            --border-color: #334155;
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
-            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.3);
-            --nav-link: #f1f5f9;
-            --accent: #064e3b;
+            /* Dark Theme - Olive/Forest Green */
+            --bg-body: #091510;
+            --bg-card: rgba(23, 43, 34, 0.7);
+            --header-bg: rgba(13, 32, 24, 0.8);
+            --text-main: #f0fcf6;
+            --text-muted: #9ca8a2;
+            --border-color: rgba(41, 61, 52, 0.6);
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.4);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.4);
+            --nav-link: #f0fcf6;
+            --accent: #004d2a;
+            --glow-1: rgba(0, 145, 80, 0.15);
+            --glow-2: rgba(52, 211, 153, 0.15);
         }
 
         body {
@@ -47,21 +55,56 @@
             display: flex;
             flex-direction: column;
             line-height: 1.6;
-            transition: background 0.3s ease, color 0.3s ease;
+            transition: background 0.5s ease, color 0.5s ease;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before, body::after {
+            content: '';
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(100px);
+            z-index: -1;
+            opacity: 0.8;
+            pointer-events: none;
+            transition: background 0.5s ease;
+        }
+        body::before {
+            top: -10%; left: -10%;
+            width: 50vw; height: 50vw;
+            background: var(--glow-1);
+        }
+        body::after {
+            bottom: -10%; right: -10%;
+            width: 40vw; height: 40vw;
+            background: var(--glow-2);
         }
 
         header {
-            background: var(--header-bg);
-            border-bottom: 1px solid var(--border-color);
-            padding: 1rem 2rem;
+            background: transparent;
+            backdrop-filter: blur(0px);
+            -webkit-backdrop-filter: blur(0px);
+            border-bottom: 1px solid transparent;
+            padding: 1.5rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             position: sticky;
             top: 0;
+            width: 100%;
             z-index: 50;
+            box-shadow: none;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        header.scrolled {
+            background: var(--header-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0.85rem 2rem;
             box-shadow: var(--shadow-sm);
-            transition: background 0.3s ease;
         }
 
         .logo {
@@ -102,6 +145,8 @@
 
         .card {
             background: var(--bg-card);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             border: 1px solid var(--border-color);
             border-radius: var(--radius);
             padding: 1.5rem;
@@ -205,7 +250,12 @@
 
         @media (max-width: 768px) {
             header {
-                padding: 1rem;
+                padding: 1rem 1.5rem;
+                width: 100%;
+                top: 0;
+            }
+            header.scrolled {
+                padding: 0.85rem 1.5rem;
             }
             .mobile-toggle {
                 display: block;
@@ -216,12 +266,15 @@
                 top: 100%;
                 left: 0;
                 right: 0;
-                background: var(--white);
+                background: var(--header-bg);
+                backdrop-filter: blur(16px);
                 flex-direction: column;
-                padding: 1rem;
-                border-bottom: 1px solid var(--border);
+                padding: 1.5rem;
+                border: 1px solid var(--border-color);
+                border-radius: 1.5rem;
                 gap: 1rem;
                 box-shadow: var(--shadow-md);
+                margin-top: 1rem;
             }
             .nav-links.active {
                 display: flex;
@@ -286,6 +339,67 @@
         .hidden {
             display: none !important;
         }
+
+        /* Theme Switcher */
+        .theme-switch-wrapper {
+            display: flex;
+            align-items: center;
+            margin-inline-end: 1rem;
+        }
+        .theme-switch {
+            position: relative;
+            display: inline-block;
+            width: 54px;
+            height: 28px;
+        }
+        .theme-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider.round {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: var(--border-color);
+            transition: .4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 6px;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        body.dark-mode .slider.round {
+            border: 1px solid rgba(255,255,255,0.05);
+            background-color: var(--border-color);
+        }
+        .slider.round::before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            z-index: 2;
+        }
+        body.dark-mode .slider.round::before {
+            transform: translateX(26px);
+            background-color: var(--primary);
+        }
+        .sun-icon, .moon-icon {
+            width: 14px;
+            height: 14px;
+            z-index: 1;
+            transition: opacity 0.3s ease;
+        }
+        .sun-icon { color: #f59e0b; }
+        .moon-icon { color: #94a3b8; }
+        body.dark-mode .moon-icon { color: #f1f5f9; }
 
         /* Global Markdown Styling */
         .markdown-content {
@@ -384,8 +498,16 @@
                 </div>
             </div>
 
-            <!-- Language Switcher Removed per user request -->
-
+            <!-- Theme Toggle -->
+            <div class="theme-switch-wrapper" style="display: flex; align-items: center;">
+                <label class="theme-switch" for="theme-checkbox">
+                    <input type="checkbox" id="theme-checkbox" />
+                    <div class="slider round">
+                        <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                        <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                    </div>
+                </label>
+            </div>
             @auth
                 <!-- Notifications -->
                 <div class="dropdown" id="notification-dropdown">
@@ -422,8 +544,8 @@
                     </div>
                 </div>
             @else
-                <div class="auth-btn-container">
-                    <a href="{{ route('register') }}" class="btn" style="padding: 0.6rem 1.5rem; background: var(--primary); color: white; border-bottom: none; border-radius: 2rem;">{{ __('messages.sign_up') }}</a>
+                <div class="auth-btn-container" style="display: flex; align-items: center; margin: 0;">
+                    <a href="{{ route('register') }}" class="btn" style="padding: 0.6rem 1.5rem; background: var(--primary); color: white; border: none; border-radius: 2rem; font-weight: 600; box-shadow: 0 4px 10px rgba(0, 145, 80, 0.2); display: inline-flex; align-items: center; justify-content: center; line-height: 1;">{{ __('messages.sign_up') }}</a>
                 </div>
             @endauth
         </nav>
@@ -435,8 +557,11 @@
         @yield('content')
     </main>
 
-    <footer style="background-color: #004d2a; padding: 4rem 2rem; color: #fff;">
-        <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 3rem;">
+    <footer style="background: linear-gradient(135deg, #004d2a, #001f11); padding: 5rem 2rem 3rem; color: #fff; border-top-left-radius: 3rem; border-top-right-radius: 3rem; margin-top: auto; position: relative; overflow: hidden; box-shadow: 0 -10px 40px rgba(0, 145, 80, 0.1);">
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: linear-gradient(90deg, transparent, #34d399, transparent); opacity: 0.5;"></div>
+        <div style="position: absolute; top: -50%; left: -10%; width: 50vw; height: 50vw; background: radial-gradient(circle, rgba(52, 211, 153, 0.05) 0%, transparent 70%); pointer-events: none;"></div>
+        
+        <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 3rem; position: relative; z-index: 1;">
             <!-- Brand -->
             <div>
                 <a href="/" style="display: flex; align-items: center; gap: 0.5rem; color: white; text-decoration: none; font-size: 1.5rem; font-weight: 800; margin-bottom: 1rem;">
@@ -474,10 +599,35 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Theme Logic
+            const themeCheckbox = document.getElementById('theme-checkbox');
             const currentTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            
             if (currentTheme === 'dark') {
                 document.body.classList.add('dark-mode');
+                if(themeCheckbox) themeCheckbox.checked = true;
             }
+
+            if(themeCheckbox) {
+                themeCheckbox.addEventListener('change', function(e) {
+                    if(e.target.checked) {
+                        document.body.classList.add('dark-mode');
+                        localStorage.setItem('theme', 'dark');
+                    } else {
+                        document.body.classList.remove('dark-mode');
+                        localStorage.setItem('theme', 'light');
+                    }
+                });
+            }
+
+            // Scroll Header Morph Logic
+            const header = document.querySelector('header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 20) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
 
             // Mobile Menu Toggle
             const mobileToggle = document.getElementById('mobile-menu-toggle');
