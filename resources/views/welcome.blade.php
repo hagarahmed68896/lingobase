@@ -146,14 +146,14 @@
                 <span style="font-size: 2.5rem;">🇪🇸</span>
                 <div>
                     <div style="font-size: 1.4rem; font-weight: 800; color: var(--text-main);">Spanish</div>
-                    <div style="font-size: 0.85rem; color: var(--text-muted);">Gramática · Historias · Examen de Nivel</div>
+                    <div style="font-size: 0.85rem; color: var(--text-muted);">Historias · Examen de Nivel</div>
                 </div>
             </div>
             <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-                <a href="{{ route('grammar.index', ['language' => 'spanish']) }}" style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-main); text-decoration: none; padding: 0.6rem 0.9rem; border-radius: 0.75rem; background: var(--bg-body); border: 1px solid var(--border-color); font-weight: 600; font-size: 0.9rem; transition: border-color 0.2s;" onmouseover="this.style.borderColor='#dc2626'" onmouseout="this.style.borderColor='var(--border-color)'">
+                {{-- <a href="{{ route('grammar.index', ['language' => 'spanish']) }}" style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-main); text-decoration: none; padding: 0.6rem 0.9rem; border-radius: 0.75rem; background: var(--bg-body); border: 1px solid var(--border-color); font-weight: 600; font-size: 0.9rem; transition: border-color 0.2s;" onmouseover="this.style.borderColor='#dc2626'" onmouseout="this.style.borderColor='var(--border-color)'">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
                     Banco de Gramática
-                </a>
+                </a> --}}
                 <a href="{{ route('stories.index', ['language' => 'spanish']) }}" style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-main); text-decoration: none; padding: 0.6rem 0.9rem; border-radius: 0.75rem; background: var(--bg-body); border: 1px solid var(--border-color); font-weight: 600; font-size: 0.9rem; transition: border-color 0.2s;" onmouseover="this.style.borderColor='#dc2626'" onmouseout="this.style.borderColor='var(--border-color)'">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2-2z"/></svg>
                     Historias de Lectura

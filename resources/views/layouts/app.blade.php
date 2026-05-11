@@ -486,7 +486,7 @@
                 <div class="dropdown-content" style="min-width: 220px;">
                     <div style="padding: 0.5rem 1rem; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted);">Grammar Bank</div>
                     <a href="{{ route('grammar.index', ['language' => 'english']) }}" style="display: flex; align-items: center; gap: 0.5rem;">🇬🇧 English Grammar</a>
-                    <a href="{{ route('grammar.index', ['language' => 'spanish']) }}" style="display: flex; align-items: center; gap: 0.5rem;">🇪🇸 Spanish Grammar</a>
+                    <!-- <a href="{{ route('grammar.index', ['language' => 'spanish']) }}" style="display: flex; align-items: center; gap: 0.5rem;">🇪🇸 Spanish Grammar</a> -->
                     <div style="border-top: 1px solid var(--border-color); margin: 0.25rem 0;"></div>
                     <div style="padding: 0.5rem 1rem; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted);">Stories</div>
                     <a href="{{ route('stories.index', ['language' => 'english']) }}" style="display: flex; align-items: center; gap: 0.5rem;">🇬🇧 English Stories</a>

@@ -122,7 +122,9 @@
             <span class="lesson-number">{{ sprintf('%02d', $loop->iteration) }}</span>
             <div class="lesson-info">
                 <h3 class="lesson-title">{{ $lesson->title }}</h3>
-                <p class="lesson-desc">Click to start this lesson</p>
+                <p class="lesson-desc" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin: 0;">
+                    {{ $lesson->description ?: 'Click to start this lesson' }}
+                </p>
             </div>
             <div class="lesson-actions">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#009150" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>

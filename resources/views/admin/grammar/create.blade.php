@@ -43,6 +43,11 @@
                     </div>
 
                     <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; font-size: 0.85rem; font-weight: 700; color: #4b5563; margin-bottom: 0.5rem;">Lesson Description (Short summary)</label>
+                        <textarea name="description" class="search-input" style="width: 100%; height: 80px; line-height: 1.6; resize: vertical; text-align: start;" dir="auto" placeholder="A brief 2-line description of what this lesson covers...">{{ old('description') }}</textarea>
+                    </div>
+
+                    <div style="margin-bottom: 1.5rem;">
                         <label style="display: block; font-size: 0.85rem; font-weight: 700; color: #4b5563; margin-bottom: 0.5rem;">Explanation (Direct Instruction)</label>
                         <textarea name="explanation" class="search-input" style="width: 100%; height: 300px; line-height: 1.6; resize: vertical; text-align: start; unicode-bidi: plaintext;" dir="auto" required placeholder="Write the core lesson content here...">{{ old('explanation') }}</textarea>
                     </div>

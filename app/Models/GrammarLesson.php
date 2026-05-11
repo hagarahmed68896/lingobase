@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class GrammarLesson extends Model
 {
-    protected $fillable = ['grammar_level_id', 'title', 'slug', 'explanation', 'arabic_explanation', 'order'];
+    protected $fillable = ['grammar_level_id', 'title', 'slug', 'description', 'explanation', 'arabic_explanation', 'order'];
 
     public function grammarLevel()
     {

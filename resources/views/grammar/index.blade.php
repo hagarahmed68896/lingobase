@@ -250,7 +250,9 @@
                         <a href="{{ route('grammar.lesson', [$language->slug, $level->slug, $lesson->slug]) }}" style="text-decoration: none; display: flex; flex-direction: column; flex-grow: 1;">
                             <div class="card-body">
                                 <h3 class="card-title">{{ $lesson->title }}</h3>
-                                <div class="card-excerpt">{{ Str::limit(strip_tags($lesson->explanation), 100) }}</div>
+                                <div class="card-excerpt" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                    {{ $lesson->description ?: Str::limit(strip_tags($lesson->explanation), 100) }}
+                                </div>
                                 <div class="card-footer">
                                     <div class="lesson-meta">
                                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>

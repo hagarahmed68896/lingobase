@@ -11,7 +11,7 @@ class GrammarController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Language::with(['grammarLevels.lessons' => function($q) use ($request) {
+        $query = Language::where('name', '!=', 'Spanish')->with(['grammarLevels.lessons' => function($q) use ($request) {
             if ($request->has('search') && $request->search != '') {
                 $q->where('title', 'like', '%' . $request->search . '%');
             }
