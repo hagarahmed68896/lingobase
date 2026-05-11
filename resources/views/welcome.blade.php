@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('styles')
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+@endsection
+
 @section('hero')
 <style>
     .bubble-bg {
@@ -8,6 +12,24 @@
             radial-gradient(circle at 15% 50%, rgba(0, 145, 80, 0.05) 0%, transparent 25%),
             radial-gradient(circle at 85% 30%, rgba(0, 145, 80, 0.05) 0%, transparent 25%);
         background-attachment: fixed;
+    }
+    
+    /* Swiper custom styles */
+    .swiper-testimonials {
+        width: 100%;
+        max-width: 100%;
+        padding: 2rem 1rem 4rem !important;
+        margin: 0 -1rem;
+        overflow: hidden;
+        position: relative;
+    }
+    .swiper-pagination-bullet-active {
+        background: var(--primary) !important;
+    }
+    .review-card {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
     }
 </style>
 <div class="hero-section bubble-bg" style="padding: 6rem 2rem; overflow: hidden; position: relative;">
@@ -26,10 +48,7 @@
             
             <div style="display: flex; gap: 1.25rem; flex-wrap: wrap;">
                 @guest
-                    <a href="{{ route('register') }}" class="btn" style="padding: 1.15rem 2.5rem; font-size: 1.1rem; border-radius: 3rem; background: var(--primary); color: white; display: flex; align-items: center; gap: 0.75rem; font-weight: 700; box-shadow: 0 10px 15px -3px rgba(0, 145, 80, 0.3);">
-                        {{ __('messages.get_started') }}
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                    </a>
+                  
                     <a href="{{ route('grammar.placement', ['language' => 'en']) }}" class="btn" style="padding: 1.15rem 2.5rem; font-size: 1.1rem; border-radius: 3rem; background: var(--bg-card); color: var(--primary); border: 2px solid var(--border-color); font-weight: 700;">Evaluate your Language Now</a>
                 @else
                     <a href="{{ route('grammar.index') }}" class="btn" style="padding: 1.15rem 2.5rem; font-size: 1.1rem; border-radius: 3rem; background: var(--primary); color: white; font-weight: 700; box-shadow: 0 10px 15px -3px rgba(0, 145, 80, 0.3);">{{ __('messages.continue_learning') }}</a>
@@ -139,34 +158,9 @@
                 </a>
             </div>
         </div>
-
-        {{-- Spanish Card --}}
-        <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 1.5rem; padding: 2rem; display: flex; flex-direction: column; gap: 1.25rem; transition: box-shadow 0.2s;" onmouseover="this.style.boxShadow='0 8px 30px rgba(220,38,38,0.1)'" onmouseout="this.style.boxShadow='none'">
-            <div style="display: flex; align-items: center; gap: 1rem;">
-                <span style="font-size: 2.5rem;">🇪🇸</span>
-                <div>
-                    <div style="font-size: 1.4rem; font-weight: 800; color: var(--text-main);">Spanish</div>
-                    <div style="font-size: 0.85rem; color: var(--text-muted);">Historias · Examen de Nivel</div>
-                </div>
-            </div>
-            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-                {{-- <a href="{{ route('grammar.index', ['language' => 'spanish']) }}" style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-main); text-decoration: none; padding: 0.6rem 0.9rem; border-radius: 0.75rem; background: var(--bg-body); border: 1px solid var(--border-color); font-weight: 600; font-size: 0.9rem; transition: border-color 0.2s;" onmouseover="this.style.borderColor='#dc2626'" onmouseout="this.style.borderColor='var(--border-color)'">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-                    Banco de Gramática
-                </a> --}}
-                <a href="{{ route('stories.index', ['language' => 'spanish']) }}" style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-main); text-decoration: none; padding: 0.6rem 0.9rem; border-radius: 0.75rem; background: var(--bg-body); border: 1px solid var(--border-color); font-weight: 600; font-size: 0.9rem; transition: border-color 0.2s;" onmouseover="this.style.borderColor='#dc2626'" onmouseout="this.style.borderColor='var(--border-color)'">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2-2z"/></svg>
-                    Historias de Lectura
-                </a>
-                <a href="{{ route('grammar.placement', ['language' => 'spanish']) }}" style="display: flex; align-items: center; gap: 0.5rem; color: white; text-decoration: none; padding: 0.6rem 0.9rem; border-radius: 0.75rem; background: #dc2626; font-weight: 700; font-size: 0.9rem;">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-                    Examen de Nivel
-                </a>
-            </div>
-        </div>
-
     </div>
 </div>
+
 {{-- Reviews / Testimonials Section --}}
 <div style="margin-top: 5rem; padding-top: 4rem; border-top: 1px solid var(--border-color); padding-bottom: 2rem;">
     <div style="text-align: center; margin-bottom: 3.5rem;">
@@ -175,74 +169,271 @@
         <p style="color: var(--text-muted); font-size: 1.1rem; max-width: 600px; margin: 0 auto;">Discover how LingoBase has helped thousands of students achieve fluency with our modern approach.</p>
     </div>
 
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
-        
-        <!-- Review 1 -->
-        <div class="review-card" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 1.5rem; padding: 2rem; position: relative; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);" onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 20px 40px -10px rgba(0, 145, 80, 0.12)'; this.style.borderColor='var(--primary)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 4px 6px -1px rgba(0,0,0,0.05)'; this.style.borderColor='var(--border-color)';">
-            <div style="position: absolute; top: -15px; right: 2rem; background: var(--primary); width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white;">
-                <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
-            </div>
-            <div style="display: flex; gap: 0.25rem; color: #fbbf24; margin-bottom: 1.25rem;">
-                @for($i=0; $i<5; $i++)
-                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                @endfor
-            </div>
-            <p style="color: var(--text-main); font-size: 1.05rem; line-height: 1.6; margin-bottom: 2rem; font-style: italic;">"The placement test was incredibly accurate. LingoBase helped me identify my weak points, and the grammar bank explanations are so clear!"</p>
-            <div style="display: flex; align-items: center; gap: 1rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
-                <img src="https://ui-avatars.com/api/?name=Sarah+M&background=009150&color=fff&rounded=true" alt="Sarah M." style="width: 48px; height: 48px; border-radius: 50%;">
-                <div>
-                    <div style="font-weight: 700; color: var(--text-main);">Sarah M.</div>
-                    <div style="font-size: 0.85rem; color: var(--text-muted);">Learning English</div>
+    <div class="swiper swiper-testimonials">
+        <div class="swiper-wrapper">
+            
+            <!-- Review 1 -->
+            <div class="swiper-slide">
+                <div class="review-card" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 1.5rem; padding: 2rem; position: relative; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);" onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 20px 40px -10px rgba(0, 145, 80, 0.12)'; this.style.borderColor='var(--primary)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 4px 6px -1px rgba(0,0,0,0.05)'; this.style.borderColor='var(--border-color)';">
+                    <div style="position: absolute; top: -15px; right: 2rem; background: var(--primary); width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white;">
+                        <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+                    </div>
+                    <div style="display: flex; gap: 0.25rem; color: #fbbf24; margin-bottom: 1.25rem;">
+                        @for($i=0; $i<5; $i++)
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        @endfor
+                    </div>
+                    <p style="color: var(--text-main); font-size: 1.05rem; line-height: 1.6; margin-bottom: 2rem; font-style: italic;">"The placement test was incredibly accurate. LingoBase helped me identify my weak points, and the grammar bank explanations are so clear!"</p>
+                    <div style="display: flex; align-items: center; gap: 1rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem; margin-top: auto;">
+                        <img src="https://ui-avatars.com/api/?name=Sarah+M&background=009150&color=fff&rounded=true" alt="Sarah M." style="width: 48px; height: 48px; border-radius: 50%;">
+                        <div>
+                            <div style="font-weight: 700; color: var(--text-main);">Sarah M.</div>
+                            <div style="font-size: 0.85rem; color: var(--text-muted);">Learning English</div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Review 2 -->
-        <div class="review-card" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 1.5rem; padding: 2rem; position: relative; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);" onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 20px 40px -10px rgba(0, 145, 80, 0.12)'; this.style.borderColor='var(--primary)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 4px 6px -1px rgba(0,0,0,0.05)'; this.style.borderColor='var(--border-color)';">
-            <div style="position: absolute; top: -15px; right: 2rem; background: var(--primary); width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white;">
-                <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
-            </div>
-            <div style="display: flex; gap: 0.25rem; color: #fbbf24; margin-bottom: 1.25rem;">
-                @for($i=0; $i<5; $i++)
-                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                @endfor
-            </div>
-            <p style="color: var(--text-main); font-size: 1.05rem; line-height: 1.6; margin-bottom: 2rem; font-style: italic;">"Learning Spanish has never been easier. The UI is smooth, the stories are engaging, and I actually enjoy studying now!"</p>
-            <div style="display: flex; align-items: center; gap: 1rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
-                <img src="https://ui-avatars.com/api/?name=Ahmed+K&background=009150&color=fff&rounded=true" alt="Ahmed K." style="width: 48px; height: 48px; border-radius: 50%;">
-                <div>
-                    <div style="font-weight: 700; color: var(--text-main);">Ahmed K.</div>
-                    <div style="font-size: 0.85rem; color: var(--text-muted);">Learning Spanish</div>
+            <!-- Review 2 -->
+            <div class="swiper-slide">
+                <div class="review-card" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 1.5rem; padding: 2rem; position: relative; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);" onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 20px 40px -10px rgba(0, 145, 80, 0.12)'; this.style.borderColor='var(--primary)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 4px 6px -1px rgba(0,0,0,0.05)'; this.style.borderColor='var(--border-color)';">
+                    <div style="position: absolute; top: -15px; right: 2rem; background: var(--primary); width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white;">
+                        <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+                    </div>
+                    <div style="display: flex; gap: 0.25rem; color: #fbbf24; margin-bottom: 1.25rem;">
+                        @for($i=0; $i<5; $i++)
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        @endfor
+                    </div>
+                    <p style="color: var(--text-main); font-size: 1.05rem; line-height: 1.6; margin-bottom: 2rem; font-style: italic;">"The best platform for mastering grammar. I love how I can track my progress and see my level improve over time. Highly recommended!"</p>
+                    <div style="display: flex; align-items: center; gap: 1rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem; margin-top: auto;">
+                        <img src="https://ui-avatars.com/api/?name=James+W&background=009150&color=fff&rounded=true" alt="James W." style="width: 48px; height: 48px; border-radius: 50%;">
+                        <div>
+                            <div style="font-weight: 700; color: var(--text-main);">James W.</div>
+                            <div style="font-size: 0.85rem; color: var(--text-muted);">Learning English</div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Review 3 -->
-        <div class="review-card" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 1.5rem; padding: 2rem; position: relative; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);" onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 20px 40px -10px rgba(0, 145, 80, 0.12)'; this.style.borderColor='var(--primary)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 4px 6px -1px rgba(0,0,0,0.05)'; this.style.borderColor='var(--border-color)';">
-            <div style="position: absolute; top: -15px; right: 2rem; background: var(--primary); width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white;">
-                <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
-            </div>
-            <div style="display: flex; gap: 0.25rem; color: #fbbf24; margin-bottom: 1.25rem;">
-                @for($i=0; $i<5; $i++)
-                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                @endfor
-            </div>
-            <p style="color: var(--text-main); font-size: 1.05rem; line-height: 1.6; margin-bottom: 2rem; font-style: italic;">"The best free resource out there! The design is stunning and the user experience feels premium. Tracking my progress is so motivating."</p>
-            <div style="display: flex; align-items: center; gap: 1rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
-                <img src="https://ui-avatars.com/api/?name=Lina+A&background=009150&color=fff&rounded=true" alt="Lina A." style="width: 48px; height: 48px; border-radius: 50%;">
-                <div>
-                    <div style="font-weight: 700; color: var(--text-main);">Lina A.</div>
-                    <div style="font-size: 0.85rem; color: var(--text-muted);">Learning English</div>
+            <!-- Review 3 -->
+            <div class="swiper-slide">
+                <div class="review-card" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 1.5rem; padding: 2rem; position: relative; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);" onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 20px 40px -10px rgba(0, 145, 80, 0.12)'; this.style.borderColor='var(--primary)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 4px 6px -1px rgba(0,0,0,0.05)'; this.style.borderColor='var(--border-color)';">
+                    <div style="position: absolute; top: -15px; right: 2rem; background: var(--primary); width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white;">
+                        <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+                    </div>
+                    <div style="display: flex; gap: 0.25rem; color: #fbbf24; margin-bottom: 1.25rem;">
+                        @for($i=0; $i<5; $i++)
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        @endfor
+                    </div>
+                    <p style="color: var(--text-main); font-size: 1.05rem; line-height: 1.6; margin-bottom: 2rem; font-style: italic;">"The best free resource out there! The design is stunning and the user experience feels premium. Tracking my progress is so motivating."</p>
+                    <div style="display: flex; align-items: center; gap: 1rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem; margin-top: auto;">
+                        <img src="https://ui-avatars.com/api/?name=Lina+A&background=009150&color=fff&rounded=true" alt="Lina A." style="width: 48px; height: 48px; border-radius: 50%;">
+                        <div>
+                            <div style="font-weight: 700; color: var(--text-main);">Lina A.</div>
+                            <div style="font-size: 0.85rem; color: var(--text-muted);">Learning English</div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
 
+            <!-- Review 4 -->
+            <div class="swiper-slide">
+                <div class="review-card" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 1.5rem; padding: 2rem; position: relative; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);" onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 20px 40px -10px rgba(0, 145, 80, 0.12)'; this.style.borderColor='var(--primary)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 4px 6px -1px rgba(0,0,0,0.05)'; this.style.borderColor='var(--border-color)';">
+                    <div style="position: absolute; top: -15px; right: 2rem; background: var(--primary); width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white;">
+                        <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+                    </div>
+                    <div style="display: flex; gap: 0.25rem; color: #fbbf24; margin-bottom: 1.25rem;">
+                        @for($i=0; $i<5; $i++)
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        @endfor
+                    </div>
+                    <p style="color: var(--text-main); font-size: 1.05rem; line-height: 1.6; margin-bottom: 2rem; font-style: italic;">"The reading stories are a game changer. I've learned so much vocabulary in context, and it doesn't even feel like studying!"</p>
+                    <div style="display: flex; align-items: center; gap: 1rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem; margin-top: auto;">
+                        <img src="https://ui-avatars.com/api/?name=Michael+R&background=009150&color=fff&rounded=true" alt="Michael R." style="width: 48px; height: 48px; border-radius: 50%;">
+                        <div>
+                            <div style="font-weight: 700; color: var(--text-main);">Michael R.</div>
+                            <div style="font-size: 0.85rem; color: var(--text-muted);">Learning English</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Review 5 -->
+            <div class="swiper-slide">
+                <div class="review-card" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 1.5rem; padding: 2rem; position: relative; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);" onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 20px 40px -10px rgba(0, 145, 80, 0.12)'; this.style.borderColor='var(--primary)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 4px 6px -1px rgba(0,0,0,0.05)'; this.style.borderColor='var(--border-color)';">
+                    <div style="position: absolute; top: -15px; right: 2rem; background: var(--primary); width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white;">
+                        <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+                    </div>
+                    <div style="display: flex; gap: 0.25rem; color: #fbbf24; margin-bottom: 1.25rem;">
+                        @for($i=0; $i<5; $i++)
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        @endfor
+                    </div>
+                    <p style="color: var(--text-main); font-size: 1.05rem; line-height: 1.6; margin-bottom: 2rem; font-style: italic;">"As a busy professional, I appreciate how I can jump in for 10 minutes and still learn something valuable. The UI is incredibly smooth."</p>
+                    <div style="display: flex; align-items: center; gap: 1rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem; margin-top: auto;">
+                        <img src="https://ui-avatars.com/api/?name=Sofia+G&background=009150&color=fff&rounded=true" alt="Sofia G." style="width: 48px; height: 48px; border-radius: 50%;">
+                        <div>
+                            <div style="font-weight: 700; color: var(--text-main);">Sofia G.</div>
+                            <div style="font-size: 0.85rem; color: var(--text-muted);">Learning English</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Review 6 -->
+            <div class="swiper-slide">
+                <div class="review-card" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 1.5rem; padding: 2rem; position: relative; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);" onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 20px 40px -10px rgba(0, 145, 80, 0.12)'; this.style.borderColor='var(--primary)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 4px 6px -1px rgba(0,0,0,0.05)'; this.style.borderColor='var(--border-color)';">
+                    <div style="position: absolute; top: -15px; right: 2rem; background: var(--primary); width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white;">
+                        <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+                    </div>
+                    <div style="display: flex; gap: 0.25rem; color: #fbbf24; margin-bottom: 1.25rem;">
+                        @for($i=0; $i<5; $i++)
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        @endfor
+                    </div>
+                    <p style="color: var(--text-main); font-size: 1.05rem; line-height: 1.6; margin-bottom: 2rem; font-style: italic;">"Finally a platform that feels modern. The placement test actually put me in the right level, and the descriptions of lessons help me choose what to study next."</p>
+                    <div style="display: flex; align-items: center; gap: 1rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem; margin-top: auto;">
+                        <img src="https://ui-avatars.com/api/?name=David+L&background=009150&color=fff&rounded=true" alt="David L." style="width: 48px; height: 48px; border-radius: 50%;">
+                        <div>
+                            <div style="font-weight: 700; color: var(--text-main);">David L.</div>
+                            <div style="font-size: 0.85rem; color: var(--text-muted);">Learning English</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Review 7 -->
+            <div class="swiper-slide">
+                <div class="review-card" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 1.5rem; padding: 2rem; position: relative; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);" onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 20px 40px -10px rgba(0, 145, 80, 0.12)'; this.style.borderColor='var(--primary)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 4px 6px -1px rgba(0,0,0,0.05)'; this.style.borderColor='var(--border-color)';">
+                    <div style="position: absolute; top: -15px; right: 2rem; background: var(--primary); width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white;">
+                        <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+                    </div>
+                    <div style="display: flex; gap: 0.25rem; color: #fbbf24; margin-bottom: 1.25rem;">
+                        @for($i=0; $i<5; $i++)
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        @endfor
+                    </div>
+                    <p style="color: var(--text-main); font-size: 1.05rem; line-height: 1.6; margin-bottom: 2rem; font-style: italic;">"The grammar explanations are better than any textbook I've used. Clear, concise, and straight to the point. I love the progress tracking too!"</p>
+                    <div style="display: flex; align-items: center; gap: 1rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem; margin-top: auto;">
+                        <img src="https://ui-avatars.com/api/?name=Emma+S&background=009150&color=fff&rounded=true" alt="Emma S." style="width: 48px; height: 48px; border-radius: 50%;">
+                        <div>
+                            <div style="font-weight: 700; color: var(--text-main);">Emma S.</div>
+                            <div style="font-size: 0.85rem; color: var(--text-muted);">Learning English</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Review 8 -->
+            <div class="swiper-slide">
+                <div class="review-card" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 1.5rem; padding: 2rem; position: relative; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);" onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 20px 40px -10px rgba(0, 145, 80, 0.12)'; this.style.borderColor='var(--primary)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 4px 6px -1px rgba(0,0,0,0.05)'; this.style.borderColor='var(--border-color)';">
+                    <div style="position: absolute; top: -15px; right: 2rem; background: var(--primary); width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white;">
+                        <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+                    </div>
+                    <div style="display: flex; gap: 0.25rem; color: #fbbf24; margin-bottom: 1.25rem;">
+                        @for($i=0; $i<5; $i++)
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        @endfor
+                    </div>
+                    <p style="color: var(--text-main); font-size: 1.05rem; line-height: 1.6; margin-bottom: 2rem; font-style: italic;">"Amazing experience. I found my level in minutes using the evaluation test. The dashboard makes it so easy to pick up where I left off."</p>
+                    <div style="display: flex; align-items: center; gap: 1rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem; margin-top: auto;">
+                        <img src="https://ui-avatars.com/api/?name=Omar+K&background=009150&color=fff&rounded=true" alt="Omar K." style="width: 48px; height: 48px; border-radius: 50%;">
+                        <div>
+                            <div style="font-weight: 700; color: var(--text-main);">Omar K.</div>
+                            <div style="font-size: 0.85rem; color: var(--text-muted);">Learning English</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Review 9 -->
+            <div class="swiper-slide">
+                <div class="review-card" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 1.5rem; padding: 2rem; position: relative; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);" onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 20px 40px -10px rgba(0, 145, 80, 0.12)'; this.style.borderColor='var(--primary)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 4px 6px -1px rgba(0,0,0,0.05)'; this.style.borderColor='var(--border-color)';">
+                    <div style="position: absolute; top: -15px; right: 2rem; background: var(--primary); width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white;">
+                        <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+                    </div>
+                    <div style="display: flex; gap: 0.25rem; color: #fbbf24; margin-bottom: 1.25rem;">
+                        @for($i=0; $i<5; $i++)
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        @endfor
+                    </div>
+                    <p style="color: var(--text-main); font-size: 1.05rem; line-height: 1.6; margin-bottom: 2rem; font-style: italic;">"Best free language tool I've ever found. The quality of content is top-notch, and the user interface is just beautiful. I use it every day."</p>
+                    <div style="display: flex; align-items: center; gap: 1rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem; margin-top: auto;">
+                        <img src="https://ui-avatars.com/api/?name=Elena+P&background=009150&color=fff&rounded=true" alt="Elena P." style="width: 48px; height: 48px; border-radius: 50%;">
+                        <div>
+                            <div style="font-weight: 700; color: var(--text-main);">Elena P.</div>
+                            <div style="font-size: 0.85rem; color: var(--text-muted);">Learning English</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Review 10 -->
+            <div class="swiper-slide">
+                <div class="review-card" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 1.5rem; padding: 2rem; position: relative; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);" onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 20px 40px -10px rgba(0, 145, 80, 0.12)'; this.style.borderColor='var(--primary)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 4px 6px -1px rgba(0,0,0,0.05)'; this.style.borderColor='var(--border-color)';">
+                    <div style="position: absolute; top: -15px; right: 2rem; background: var(--primary); width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white;">
+                        <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+                    </div>
+                    <div style="display: flex; gap: 0.25rem; color: #fbbf24; margin-bottom: 1.25rem;">
+                        @for($i=0; $i<5; $i++)
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        @endfor
+                    </div>
+                    <p style="color: var(--text-main); font-size: 1.05rem; line-height: 1.6; margin-bottom: 2rem; font-style: italic;">"Seamless experience from start to finish. I love how I can see my progress in each section. It keeps me motivated to keep learning!"</p>
+                    <div style="display: flex; align-items: center; gap: 1rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem; margin-top: auto;">
+                        <img src="https://ui-avatars.com/api/?name=Kevin+B&background=009150&color=fff&rounded=true" alt="Kevin B." style="width: 48px; height: 48px; border-radius: 50%;">
+                        <div>
+                            <div style="font-weight: 700; color: var(--text-main);">Kevin B.</div>
+                            <div style="font-size: 0.85rem; color: var(--text-muted);">Learning English</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- Add Pagination -->
+        <div class="swiper-pagination"></div>
     </div>
 </div>
 
 @endsection
-@push('scripts')
+
+@section('scripts')
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
-    // Any extra scripts
+    window.addEventListener('load', function() {
+        const testimonialSwiper = new Swiper('.swiper-testimonials', {
+            slidesPerView: 1,
+            spaceBetween: 20,
+            loop: true,
+            grabCursor: true,
+            autoplay: {
+                delay: 4000,
+                disableOnInteraction: false,
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+                dynamicBullets: true,
+            },
+            breakpoints: {
+                // when window width is >= 768px
+                768: {
+                    slidesPerView: 2,
+                    spaceBetween: 30
+                },
+                // when window width is >= 1024px
+                1024: {
+                    slidesPerView: 3,
+                    spaceBetween: 30
+                }
+            },
+            // Add observer for better handling of dynamic content or visibility changes
+            observer: true,
+            observeParents: true,
+        });
+    });
 </script>
-@endpush
+@endsection

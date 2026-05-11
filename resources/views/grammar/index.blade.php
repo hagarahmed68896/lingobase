@@ -8,12 +8,14 @@
         margin: 0 !important;
     }
     .hero-section {
-        background: linear-gradient(135deg, #006837 0%, #008f4d 50%, #005a2e 100%);
-        padding: 3.5rem 2rem;
+        background: #004d2a;
+        padding: 4rem 2rem;
         color: white;
         text-align: center;
         position: relative;
         overflow: hidden;
+        border-bottom-left-radius: 2rem;
+        border-bottom-right-radius: 2rem;
     }
     .hero-bg-pattern {
         position: absolute;
@@ -21,9 +23,8 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
-        background-size: 20px 20px;
-        opacity: 0.5;
+        background: radial-gradient(circle at 50% 50%, rgba(52, 211, 153, 0.05) 0%, transparent 70%);
+        z-index: 1;
     }
     .hero-content {
         position: relative;
@@ -32,50 +33,80 @@
         margin: 0 auto;
     }
     .hero-title {
-        font-size: 3.5rem;
+        font-size: 2.75rem;
         font-weight: 800;
-        margin-bottom: 1rem;
-        letter-spacing: -0.05rem;
+        margin-bottom: 0.75rem;
+        letter-spacing: -0.02em;
     }
     .hero-subtitle {
-        font-size: 1.25rem;
-        opacity: 0.9;
+        font-size: 1.1rem;
+        opacity: 0.8;
         margin-bottom: 2.5rem;
-        font-weight: 300;
+        font-weight: 400;
     }
     .search-container {
-        background: var(--bg-card);
-        padding: 0.5rem;
-        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(8px);
+        padding: 0.4rem;
+        border-radius: 1.25rem;
         display: flex;
         align-items: center;
-        max-width: 600px;
+        max-width: 550px;
         margin: 0 auto;
-        box-shadow: var(--shadow-sm);
-        border: 1px solid var(--border-color);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .search-container:focus-within {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: var(--primary);
+        box-shadow: 0 0 0 4px rgba(0, 145, 80, 0.2);
     }
     .search-input {
         flex: 1;
         border: none;
-        padding: 1rem 1.5rem;
+        padding: 0.85rem 1.5rem;
         font-size: 1rem;
         outline: none;
-        border-radius: 999px;
         background: transparent;
-        color: var(--text-main);
+        color: white;
     }
     .search-btn {
-        background: #009150;
+        background: var(--primary);
         color: white;
         border: none;
-        padding: 0.75rem 1.5rem;
-        border-radius: 999px;
+        padding: 0.85rem 1.75rem;
+        border-radius: 1rem;
         cursor: pointer;
         font-weight: 600;
-        transition: background 0.2s;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
     }
     .search-btn:hover {
-        background: #007a43;
+        background: var(--primary-dark);
+        transform: translateY(-1px);
+    }
+    
+    /* Small dynamic badge */
+    .dynamic-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: rgba(52, 211, 153, 0.15);
+        color: #34d399;
+        padding: 0.4rem 1rem;
+        border-radius: 2rem;
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        border: 1px solid rgba(52, 211, 153, 0.2);
+        animation: pulse-badge 2s infinite;
+    }
+    @keyframes pulse-badge {
+        0% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.4); }
+        70% { box-shadow: 0 0 0 10px rgba(52, 211, 153, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); }
     }
     .content-wrapper {
         max-width: 1400px;
@@ -210,12 +241,19 @@
 <div class="hero-section">
     <div class="hero-bg-pattern"></div>
     <div class="hero-content">
+        <div class="dynamic-badge">
+            <span style="display: block; width: 8px; height: 8px; background: #34d399; border-radius: 50%;"></span>
+            {{ __('messages.grammar_bank') }}
+        </div>
         <h1 class="hero-title">{{ __('messages.master_grammar') }}</h1>
         <p class="hero-subtitle">{{ __('messages.grammar_subtitle') }}</p>
         
         <form action="{{ route('grammar.index') }}" method="GET" class="search-container">
             <input type="text" name="search" value="{{ request('search') }}" placeholder="{{ __('messages.search_topics') }}" class="search-input">
-            <button type="submit" class="search-btn">{{ __('messages.search') }}</button>
+            <button type="submit" class="search-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                {{ __('messages.search') }}
+            </button>
         </form>
     </div>
 </div>

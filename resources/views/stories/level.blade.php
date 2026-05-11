@@ -8,44 +8,60 @@
         margin: 0 !important;
     }
     .header-section {
-        background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://source.unsplash.com/random/1920x400?nature,forest') no-repeat center center;
-        background-size: cover;
-        padding: 6rem 2rem;
-        text-align: center;
+        background: #004d2a;
+        padding: 4rem 2rem;
         color: white;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        border-bottom-left-radius: 2rem;
+        border-bottom-right-radius: 2rem;
+    }
+    .header-bg-pattern {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at 50% 50%, rgba(52, 211, 153, 0.05) 0%, transparent 70%);
+        z-index: 1;
     }
     .breadcrumb {
-        margin-bottom: 2rem;
+        position: relative;
+        z-index: 10;
+        margin-bottom: 1.5rem;
         display: flex;
         justify-content: center;
-        gap: 0.5rem;
-        color: rgba(255,255,255,0.8);
-        font-size: 0.9rem;
+        align-items: center;
+        gap: 0.75rem;
+        color: rgba(255,255,255,0.7);
+        font-size: 0.85rem;
+        font-weight: 500;
     }
     .breadcrumb a {
         color: white;
         text-decoration: none;
-        font-weight: 500;
-        opacity: 0.9;
+        transition: opacity 0.2s;
     }
     .breadcrumb a:hover {
-        opacity: 1;
-        text-decoration: underline;
+        opacity: 0.8;
     }
     .page-title {
-        font-size: 3rem;
+        position: relative;
+        z-index: 10;
+        font-size: 2.75rem;
         font-weight: 800;
-        margin-bottom: 1rem;
-        text-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        margin-bottom: 0;
+        letter-spacing: -0.02em;
     }
     .content-wrapper {
-        max-width: 95%;
+        max-width: 1200px;
         margin: 0 auto;
-        padding: 4rem 2rem;
+        padding: 4rem 1.5rem;
     }
     .stories-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
         gap: 2.5rem;
     }
     .story-card {
@@ -53,19 +69,20 @@
         border-radius: 1.5rem;
         overflow: hidden;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
         box-shadow: var(--shadow-sm);
+        border: 1px solid var(--border-color);
         height: 100%;
         display: flex;
         flex-direction: column;
-        border: 1px solid var(--border-color);
     }
     .story-card:hover {
         transform: translateY(-8px);
-        box-shadow: var(--shadow-md);
+        box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
         border-color: var(--primary);
     }
     .story-img-container {
-        height: 240px;
+        height: 220px;
         overflow: hidden;
     }
     .story-img {
@@ -74,60 +91,81 @@
         object-fit: cover;
         transition: transform 0.5s;
     }
-    .story-card:hover .story-img {
-        transform: scale(1.05);
-    }
     .card-body {
-        padding: 2rem;
+        padding: 1.5rem;
         flex-grow: 1;
         display: flex;
         flex-direction: column;
     }
     .story-title {
-        font-size: 1.5rem;
+        font-size: 1.35rem;
         font-weight: 700;
-        margin: 0 0 1rem 0;
+        margin: 0 0 0.75rem 0;
         color: var(--text-main);
-        line-height: 1.2;
     }
     .story-excerpt {
         color: var(--text-muted);
-        font-size: 1rem;
+        font-size: 0.95rem;
         line-height: 1.6;
-        margin-bottom: 2rem;
+        margin-bottom: 1.5rem;
         flex-grow: 1;
     }
     .read-btn {
-        width: 100%;
-        padding: 1rem;
-        background: #009150;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.75rem 1.5rem;
+        background: var(--primary);
         color: white;
-        border: none;
-        border-radius: 0.75rem;
+        border-radius: 1rem;
         font-weight: 600;
-        font-size: 1rem;
-        cursor: pointer;
-        transition: background 0.2s;
-        text-align: center;
         text-decoration: none;
-        display: block;
+        transition: all 0.2s;
     }
-    .read-btn:hover {
-        background: #007a43;
+    .story-card:hover .read-btn {
+        background: var(--primary-dark);
+    }
+
+    /* Small dynamic badge */
+    .dynamic-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: rgba(52, 211, 153, 0.15);
+        color: #34d399;
+        padding: 0.4rem 1rem;
+        border-radius: 2rem;
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        border: 1px solid rgba(52, 211, 153, 0.2);
+        animation: pulse-badge 2s infinite;
+    }
+    @keyframes pulse-badge {
+        0% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.4); }
+        70% { box-shadow: 0 0 0 10px rgba(52, 211, 153, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); }
     }
 </style>
 @endsection
 
 @section('content')
 <div class="header-section">
-    <nav class="breadcrumb">
-        <a href="{{ route('stories.index') }}">Stories</a>
-        <span>/</span>
-        <span>{{ $language->name }}</span>
-        <span>/</span>
-        <span>{{ $level->name }}</span>
-    </nav>
-    <h1 class="page-title">{{ $level->name }} Stories</h1>
+    <div class="header-bg-pattern"></div>
+    <div class="header-content">
+        <div class="dynamic-badge">
+            <span style="display: block; width: 8px; height: 8px; background: #34d399; border-radius: 50%;"></span>
+            {{ $language->name }} Stories
+        </div>
+        <nav class="breadcrumb">
+            <a href="{{ route('stories.index') }}">Stories</a>
+            <span>/</span>
+            <span>{{ $language->name }}</span>
+            <span>/</span>
+            <span style="color: white;">{{ $level->name }}</span>
+        </nav>
+        <h1 class="page-title">{{ $level->name }} Stories</h1>
+    </div>
 </div>
 
 <div class="content-wrapper">

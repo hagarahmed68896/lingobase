@@ -816,7 +816,7 @@
                         <select name="language" class="form-control">
                             <option value="en" {{ $user->language == 'en' ? 'selected' : '' }}>English</option>
                             <option value="ar" {{ $user->language == 'ar' ? 'selected' : '' }}>Arabic (العربية)</option>
-                            <option value="es" {{ $user->language == 'es' ? 'selected' : '' }}>Spanish (Español)</option>
+
                         </select>
                     </div>
                 </div>
